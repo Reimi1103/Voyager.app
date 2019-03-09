@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Bank name:</strong>
+  <%= @bank_account.bank_name %>
+</p>
+
+<p>
+  <strong>Bank code:</strong>
+  <%= @bank_account.bank_code %>
+</p>
+
+<p>
+  <strong>Branch name:</strong>
+  <%= @bank_account.branch_name %>
+</p>
+
+<p>
+  <strong>Branch code:</strong>
+  <%= @bank_account.branch_code %>
+</p>
+
+<p>
+  <strong>Bank type:</strong>
+  <%= @bank_account.bank_type %>
+</p>
+
+<p>
+  <strong>Bank holder:</strong>
+  <%= @bank_account.bank_holder %>
+</p>
+
+<p>
+  <strong>Bank number:</strong>
+  <%= @bank_account.bank_number %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @bank_account.user_id %>
+</p>
+
+<%= link_to 'Edit', edit_bank_account_path(@bank_account) %> |
+<%= link_to 'Back', bank_accounts_path %>
