@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_09_063934) do
+ActiveRecord::Schema.define(version: 2019_03_13_084750) do
 
   create_table "bank_accounts", force: :cascade do |t|
     t.string "bank_name"
     t.integer "bank_code"
     t.string "branch_name"
     t.integer "branch_code"
-    t.integer "bank_type"
+    t.string "bank_type"
     t.string "bank_holder"
     t.integer "bank_number"
     t.integer "user_id"
@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(version: 2019_03_09_063934) do
     t.integer "user_id"
     t.string "title"
     t.string "prologue"
-    t.string "bookcover"
-    t.string "progress"
+    t.string "bookCover"
+    t.boolean "progress"
     t.string "schedule"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -100,6 +100,8 @@ ActiveRecord::Schema.define(version: 2019_03_09_063934) do
     t.integer "book_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "created_at"], name: "index_posts_on_user_id_and_created_at"
+    t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "relationships", force: :cascade do |t|
@@ -121,6 +123,7 @@ ActiveRecord::Schema.define(version: 2019_03_09_063934) do
     t.string "thaksImage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "remember_digest"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

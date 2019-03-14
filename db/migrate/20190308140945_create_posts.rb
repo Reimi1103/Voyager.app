@@ -11,6 +11,9 @@ class CreatePosts < ActiveRecord::Migration[5.2]
       t.integer :book_id
 
       t.timestamps
+
+      t.references :user, index: true, foreign_key: true
     end
+    add_index :posts, [:user_id, :created_at]
   end
 end

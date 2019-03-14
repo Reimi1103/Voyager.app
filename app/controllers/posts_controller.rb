@@ -10,6 +10,8 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
+    @user = User.find(params[:id])
+    @posts = @user.posts.paginate(page: params[:page])
   end
 
   # GET /posts/new
@@ -24,15 +26,12 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
-    @post = Post.new(post_params)
-
-    respond_to do |format|
+    @post = current_user.posts.new(post_params)
       if @post.save
         format.html { redirect_to @post, notice: 'Post was successfully created.' }
         format.json { render :show, status: :created, location: @post }
       else
-        format.html { render :new }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+        render :new
       end
     end
   end
@@ -71,4 +70,3 @@ class PostsController < ApplicationController
     def post_params
       params.require(:post).permit(:user_id, :text, :image1, :image2, :image3, :longitude, :latitude, :book_id)
     end
-end
