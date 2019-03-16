@@ -17,7 +17,7 @@
 
 <p>
   <strong>Bookcover:</strong>
-  <%= @book.bookcover %>
+  <%= image_tag @book.bookCover.url,style:"width:300px;" %>
 </p>
 
 <p>
@@ -32,3 +32,58 @@
 
 <%= link_to 'Edit', edit_book_path(@book) %> |
 <%= link_to 'Back', books_path %>
+
+<%= link_to "ポストの作成",new_book_post_path(@book),class: "btn btn-info" %>
+<h3>投稿したポスト</h3>
+<% @book.posts.each do |post| %>
+  <div class="panel panel-body panel-default">
+    <%= link_to book_post_path(@book.id,post.id) do %>
+
+        <label for="">テキスト</label>
+        <p><%= post.text %></p>
+
+
+        <div id="map"></div>
+          <style type="text/css">
+            #map {
+              height:400px;
+            }
+          </style>
+            <script type="text/javascript">
+              var latitude = <%= post.latitude %>;
+              var longitude = <%= post.longitude %>;
+
+
+              $('#map_latitude').val(latitude);
+              $('#map_longitude').val(longitude);
+                  L.Icon.Default.imagePath = "/assets";
+                    var map = L.map('map').setView([latitude, longitude],17);
+                    var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+                    var osmAttrib = "Map data OpenstreetMap contributors";
+                    L.tileLayer(osmUrl,{
+                      attribution: osmAttrib,
+                      maxZoom: 20,
+                    }).addTo(map);
+
+                    var marker = L.marker([latitude, longitude]).addTo(map);
+
+                    map.on("click",function(e){
+                      marker.setLatLng(e.latlng);
+                      $('#map_latitude').val(e.latlng.lat);
+                      $('#map_longitude').val(e.latlng.lng);
+                    });
+
+              </script>
+
+
+        <label for="">画像</label>
+        <p><%= image_tag post.image1.url ,style:"width:300px;" unless post.image1.blank?%></p>
+        <p><%= image_tag post.image2.url ,style:"width:300px;" unless post.image2.blank?%></p>
+        <p><%= image_tag post.image3.url ,style:"width:300px;" unless post.image3.blank? %></p>
+
+      </div>
+
+
+
+     <% end %>
+<% end %>

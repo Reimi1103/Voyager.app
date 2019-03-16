@@ -1,8 +1,57 @@
-<li id="post-<%= post.id %>">
-  <%= link_to gravatar_for(post.user, size: 50), post.user %>
-  <span class="user"><%= link_to post.user.name, post.user %></span>
-  <span class="content"><%= post.text %></span>
-  <span class="timestamp">
-    Posted <%= time_ago_in_words(post.created_at) %> ago.
-  </span>
-</li>
+<% provide(:title, @post.user.name) %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="user_info">
+      <h1>
+        <%= gravatar_for @post.user %>
+        <%= @post.user.name %>
+      </h1>
+    </section>
+  </aside>
+  <div class="col-md-8">
+    <label for="">テキスト</label>
+    <p><%= @post.text %></p>
+
+<!-- map -->
+    <div id="map"></div>
+      <style type="text/css">
+        #map {
+          height:400px;
+        }
+      </style>
+        <script type="text/javascript">
+          var latitude = <%= @post.latitude %>;
+          var longitude = <%= @post.longitude %>;
+
+
+          $('#map_latitude').val(latitude);
+          $('#map_longitude').val(longitude);
+              L.Icon.Default.imagePath = "/assets";
+                var map = L.map('map').setView([latitude, longitude],17);
+                var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+                var osmAttrib = "Map data OpenstreetMap contributors";
+                L.tileLayer(osmUrl,{
+                  attribution: osmAttrib,
+                  maxZoom: 20,
+                }).addTo(map);
+
+                var marker = L.marker([latitude, longitude]).addTo(map);
+
+                map.on("click",function(e){
+                  marker.setLatLng(e.latlng);
+                  $('#map_latitude').val(e.latlng.lat);
+                  $('#map_longitude').val(e.latlng.lng);
+                });
+
+          </script>
+<!-- mapここまで -->
+
+
+
+    <label for="">画像</label>
+    <p><%= image_tag @post.image1.url ,style:"width:300px;" unless @post.image1.blank?%></p>
+    <p><%= image_tag @post.image2.url ,style:"width:300px;" unless @post.image2.blank?%></p>
+    <p><%= image_tag @post.image3.url ,style:"width:300px;" unless @post.image3.blank? %></p>
+
+  </div>
+</div>

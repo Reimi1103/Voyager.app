@@ -24,6 +24,7 @@ gem 'coffee-rails', '~> 4.2'
 
 gem 'jquery-rails', '4.3.1'
 
+gem 'leaflet-rails'
 
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -48,7 +49,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'sqlite3', '~> 1.3.6'
-  
+
 end
 
 group :development do

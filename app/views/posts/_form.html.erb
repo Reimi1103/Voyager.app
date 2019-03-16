@@ -1,4 +1,4 @@
-<%= form_with(model: post, local: true) do |form| %>
+<%= form_for post,url: book_posts_path do |form| %>
   <% if post.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= form.label :text %>
-    <%= form.text_field :text %>
+    <%= form.text_area :text,class: "form-control" %>
   </div>
 
   <div class="field">
@@ -31,22 +31,50 @@
     <%= form.file_field :image3 %>
   </div>
 
-  <div class="field">
-    <%= form.label :longitude %>
-    <%= form.number_field :longitude %>
+  <%= hidden_field_tag "post[latitude]","",id: "map_latitude" %>
+  <%= hidden_field_tag "post[longitude]","",id: "map_longitude" %>
+  <div id="map"></div>
+    <style type="text/css">
+      #map {
+        height:400px;
+      }
+    </style>
+    <script type="text/javascript">
+      var latitude = 35.679
+      var longitude = 139.732
+
+      $('#map_latitude').val(latitude);
+      $('#map_longitude').val(longitude);
+          L.Icon.Default.imagePath = "/assets";
+          var map = L.map('map').setView([latitude, longitude],17);
+          var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+          var osmAttrib = "Map data OpenstreetMap contributors";
+          L.tileLayer(osmUrl,{
+            attribution: osmAttrib,
+            maxZoom: 20,
+          }).addTo(map);
+
+          var marker = L.marker([latitude, longitude]).addTo(map);
+
+          map.on("click",function(e){
+            marker.setLatLng(e.latlng);
+            $('#map_latitude').val(e.latlng.lat);
+            $('#map_longitude').val(e.latlng.lng);
+          });
+
+    </script>
+
+  <!-- <div class="field">
+    <#%= form.label :longitude %>
+    <#%= form.number_field :longitude,class: "form-control"  %>
   </div>
 
   <div class="field">
-    <%= form.label :latitude %>
-    <%= form.number_field :latitude %>
-  </div>
-
-  <div class="field">
-    <%= form.label :book_id %>
-    <%= form.number_field :book_id %>
-  </div>
+    <#%= form.label :latitude %>
+    <#%= form.number_field :latitude,class: "form-control"  %>
+  </div> -->
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit "ポストの作成",class: "btn btn-success" %>
   </div>
 <% end %>

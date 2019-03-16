@@ -16,7 +16,9 @@ $gray-medium-light: #eaeaea;
 body {
   padding-top: 60px;
 }
-
+a:hover{
+  color: gray !important;
+}
 section {
   overflow: auto;
 }

@@ -12,36 +12,26 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :user_id %>
-    <%= form.number_field :user_id %>
+    <%= form.label "本のタイトル" %>
+    <%= form.text_field :title,class: "form-control"  %>
   </div>
 
   <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
+    <%= form.label "プロローグ" %>
+    <%= form.text_field :prologue,class: "form-control"  %>
   </div>
 
   <div class="field">
-    <%= form.label :prologue %>
-    <%= form.text_field :prologue %>
+    <%= form.label "ブックカバー" %>
+    <%= form.file_field :bookCover,class: "form-control"  %>
   </div>
 
   <div class="field">
-    <%= form.label :bookcover %>
-    <%= form.text_field :bookcover %>
-  </div>
-
-  <div class="field">
-    <%= form.label :progress %>
-    <%= form.text_field :progress %>
-  </div>
-
-  <div class="field">
-    <%= form.label :schedule %>
-    <%= form.text_field :schedule %>
+    <%= form.label "スケジュール" %>
+    <%= form.text_field :schedule,class: "form-control"  %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit "ブックを作成する",class: "btn btn-success" %>
   </div>
 <% end %>

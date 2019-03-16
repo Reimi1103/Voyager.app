@@ -1,5 +1,6 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy]
+  before_action :duplicate_ban, only: [:new, :create]
 
   # GET /books
   # GET /books.json
@@ -10,6 +11,7 @@ class BooksController < ApplicationController
   # GET /books/1
   # GET /books/1.json
   def show
+    @book = Book.find_by(id: params[:id])
   end
 
   # GET /books/new
@@ -24,8 +26,8 @@ class BooksController < ApplicationController
   # POST /books
   # POST /books.json
   def create
-    @book = Book.new(book_params)
-
+    @book = current_user.books.new(book_params)
+    @book.progress = false
     respond_to do |format|
       if @book.save
         format.html { redirect_to @book, notice: 'Book was successfully created.' }
@@ -41,7 +43,14 @@ class BooksController < ApplicationController
   # PATCH/PUT /books/1.json
   def update
     respond_to do |format|
-      if @book.update(book_params)
+      if params[:book][:progress] == "true"
+        prog = true
+      else
+        prog =false
+      end
+      @book.progress = prog
+      # if @book.update(book_params)
+      if @book.save
         format.html { redirect_to @book, notice: 'Book was successfully updated.' }
         format.json { render :show, status: :ok, location: @book }
       else
@@ -69,6 +78,12 @@ class BooksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
-      params.require(:book).permit(:user_id, :title, :prologue, :bookcover, :progress, :schedule)
+      params.require(:book).permit(:user_id, :title, :prologue, :bookCover, :progress, :schedule)
+    end
+    def duplicate_ban
+      if current_user.books.map(&:progress).include?(nil)
+        #進行中のBookが存在する
+        redirect_to root_path,danger: "進行中のBookがあります。"
+      end
     end
 end

@@ -95,8 +95,8 @@ ActiveRecord::Schema.define(version: 2019_03_13_084750) do
     t.string "image1"
     t.string "image2"
     t.string "image3"
-    t.integer "longitude"
-    t.integer "latitude"
+    t.float "longitude"
+    t.float "latitude"
     t.integer "book_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

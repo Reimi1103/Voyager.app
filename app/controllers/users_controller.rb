@@ -8,6 +8,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @books = current_user.books
   end
 
   def new
@@ -24,8 +25,9 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
       if @user.save
         log_in @user
-        flash[:success] = "登録完了"
+        redirect_to book_post_path,success:"登録完了"
       else
+        flash[:danger] = "登録失敗"
         render 'new'
       end
     end

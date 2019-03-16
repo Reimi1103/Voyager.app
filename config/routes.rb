@@ -5,13 +5,19 @@ Rails.application.routes.draw do
 
   resources :notifications
   resources :bank_accounts
-  resources :books
-  resources :posts
+
+  resources :books do
+    resources :posts
+  end
+  
+
   resources :users
   get     '/signup', to: 'users#new'
   post '/signup',  to: 'users#create'
 
   get '/newpost', to: 'posts#new'
+
+  get '/newbook', to: 'books#new'
 
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'
