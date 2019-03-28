@@ -1,3 +1,32 @@
-// Place all the styles related to the users controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+.user_image {
+  margin-right: 20px;
+}
+.userdate{
+  float: left;
+  margin-right: 10px;
+}
+
+.row {
+  margin: 5px 10px 10px 10px;
+  padding: 0;
+}
+
+.panel {
+  width: 90%;
+}
+
+h3{
+  margin: 5px;
+}
+
+hr {
+  margin: 5px;
+}
+
+.edit-row{
+   margin-left: 10px;
+   margin-right: 10px;
+}

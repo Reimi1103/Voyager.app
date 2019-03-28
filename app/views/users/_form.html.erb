@@ -1,3 +1,4 @@
+<div class="edit-row">
 <%= form_with(model: user, local: true) do |form| %>
   <% if user.errors.any? %>
     <div id="error_explanation">
@@ -12,18 +13,18 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
+    <%= form.label :ニックネーム %>
     <%= form.text_field :name %>
   </div>
 
   <div class="field">
-    <%= form.label :image %>
-    <%= form.text_field :image %>
+    <%= form.label :プロフィール画像 %>
+    <%= form.file_field :image %>
   </div>
 
   <div class="field">
-    <%= form.label :introduction %>
-    <%= form.text_field :introduction %>
+    <%= form.label :プロフィール %>
+    <%= form.text_area :introduction %>
   </div>
 
   <div class="field">
@@ -32,23 +33,23 @@
   </div>
 
   <div class="field">
-    <%= form.label :password_digest %>
-    <%= form.text_field :password_digest %>
+    <%= form.label :password %>
+    <%= form.text_field :password %>
   </div>
 
   <div class="field">
-    <%= form.label :points %>
-    <%= form.number_field :points %>
+    <%= form.label :ポイント %>
+
   </div>
 
   <div class="field">
-    <%= form.label :weblink %>
+    <%= form.label :URL %>
     <%= form.text_field :weblink %>
   </div>
 
   <div class="field">
-    <%= form.label :thaksImage %>
-    <%= form.text_field :thaksImage %>
+    <%= form.label :お礼の画像 %>
+    <%= form.file_field :thaksImage %>
   </div>
 
   <div class="actions">

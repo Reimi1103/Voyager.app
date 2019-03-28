@@ -1,23 +1,43 @@
 <% provide(:title, @user.name) %>
-<div class="row">
-  <aside class="col-md-4">
-    <section class="user_info">
-      <h1>
-        <%= gravatar_for @user %>
-        <%= @user.name %>
-      </h1>
-    </section>
-  </aside>
-  <div class="col-md-8">
-    <% if @user.posts.any? %>
-      <h3>posts (<%= @user.posts.count %>)</h3>
-      <ol class="posts">
-        <%#= render @posts %>
-      </ol>
-      <%#= will_paginate @posts %>
+<div class="container">
+    <div class="col-md-8">
+      <div class="user-header">
+      <div class="user_image">
+          <%= gravatar_for @user %>
+      </div>
+        <p class="userdate">floow</p>
+        <p class="userdate">fllower</p>
+        <p class="userdate">本の数</p>
+      </div>
+     </div>
+<!--  自分のプロフィールの場合は編集ボタンをだす -->
+       <li><%= link_to "編集", edit_user_path %></li>
+<!--  自分以外のプロフィールの場合はフォローボタン（済みなら解除） -->
+       <li><%= link_to "フォロー", edit_user_path %></li>
+<!--  自分以外のプロフィールの場合はフォローボタン（済みなら解除） -->
+      <li><%= link_to "本を作る", new_book_path %></li>
+    </div>
+<!-- -->
+
+<div class="container">
+    <div class="row col-md-8">
+      <%= @user.name %>
+      <% if @user.introduction? %>
+      <%= @user.introduction %>
+      <% end %>
+      <% if @user.weblink? %>
+      <%= @user.weblink %>
+      <% end %>
+  <hr>
+
+  <h3>Book</h3>
+      <% if @user.books.any? %>
+      <% @books.each do |book| %>
+    <div class="panel">
+
+  <%= link_to book.title,book_path(book) %>
+</div>
     <% end %>
-    <% @books.each do |book| %>
-      <p><%= link_to book.title,book_path(book) %></p>
     <% end %>
   </div>
-</div>
+ </div>

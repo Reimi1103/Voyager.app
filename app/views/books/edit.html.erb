@@ -1,4 +1,4 @@
-<h1>Editing Book</h1>
+<h1>BOOKの編集</h1>
 
 <%= form_with(model: @book, local: true) do |form| %>
   <% if @book.errors.any? %>
@@ -17,6 +17,26 @@
   <div class="field">
     <%= form.label :progress %>
     <%= form.check_box :progress, {:checked => true}, true, false %>
+  </div>
+
+  <div class="field">
+    <%= form.label "本のタイトル" %>
+    <%= form.text_field :title,class: "form-control"  %>
+  </div>
+
+  <div class="field">
+    <%= form.label "プロローグ" %>
+    <%= form.text_field :prologue,class: "form-control"  %>
+  </div>
+
+  <div class="field">
+    <%= form.label "ブックカバー" %>
+    <%= form.file_field :bookCover,class: "form-control"  %>
+  </div>
+
+  <div class="field">
+    <%= form.label "スケジュール" %>
+    <%= form.text_field :schedule,class: "form-control"  %>
   </div>
 
   <div class="actions">

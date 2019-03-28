@@ -4,5 +4,19 @@ module UsersHelper
   gravatar_id = Digest::MD5::hexdigest(user.email.downcase)
   gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}"
   image_tag(gravatar_url, alt: user.name, class: "gravatar")
-end
+  end
+
+
+
+
+  def image_for(user)
+    @book = Book.find_by(id: params[:id])
+    @user = User.find_by(id: @book.user_id)
+    if @user.image
+      image_tag "/#{@user.image}"
+    else
+      image_tag "profile_icon.jpg"
+    end
+  end
+
 end

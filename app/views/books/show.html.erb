@@ -1,89 +1,125 @@
-<p id="notice"><%= notice %></p>
+<div class="container">
+<div class="bookCover"><!-- 概要　-->
+    <%= image_for(@user) %>
+    <%= @user.name %>
 
-<p>
-  <strong>User:</strong>
-  <%= @book.user_id %>
-</p>
+    <div class="bookCover-image">
 
-<p>
-  <strong>Title:</strong>
-  <%= @book.title %>
-</p>
+    <%= image_tag @book.bookCover.url, width:"300px" %>
+      <!---
+      <p class="label"><#%= @book.title %></p>
+    </div>
+-->
 
-<p>
-  <strong>Prologue:</strong>
-  <%= @book.prologue %>
-</p>
+    <div class="book_particulars">
+      <%= @book.progress %>
+			<%= simple_format @book.prologue %>
+      <strong>旅のスケジュール</strong>
+      <%= @book.schedule %>
 
-<p>
-  <strong>Bookcover:</strong>
-  <%= image_tag @book.bookCover.url,style:"width:300px;" %>
-</p>
 
-<p>
-  <strong>Progress:</strong>
-  <%= @book.progress %>
-</p>
 
-<p>
-  <strong>Schedule:</strong>
-  <%= @book.schedule %>
-</p>
+    <%= link_to 'Edit', edit_book_path(@book) %> |
+    <%= link_to 'Back', books_path %>
+    <%= link_to "ポストの作成",new_book_post_path(@book),class: "btn btn-info" %>
+    </div>
+	</div>
+	<hr>
 
-<%= link_to 'Edit', edit_book_path(@book) %> |
-<%= link_to 'Back', books_path %>
 
-<%= link_to "ポストの作成",new_book_post_path(@book),class: "btn btn-info" %>
-<h3>投稿したポスト</h3>
+<!-- ポスト　-->
 <% @book.posts.each do |post| %>
-  <div class="panel panel-body panel-default">
-    <%= link_to book_post_path(@book.id,post.id) do %>
-
-        <label for="">テキスト</label>
-        <p><%= post.text %></p>
 
 
-        <div id="map"></div>
-          <style type="text/css">
-            #map {
-              height:400px;
-            }
-          </style>
-            <script type="text/javascript">
-              var latitude = <%= post.latitude %>;
-              var longitude = <%= post.longitude %>;
+<div class="panel panel-default"><!-- パネル　-->
+<div class="panel-body">
+	<!-- マーカー -->
+  <button type="button" name="button"  data-toggle="modal" data-target="#mapModal" data-backdrop="true" onClick="map_function(<%= post.latitude %>,<%= post.longitude %>)">
+<i class="fas fa-map-marker-alt" style="font-size: 30px;margin: 10px 10px 0px 20px;color: #ff0e0e;"></i>
+  </button>
 
 
-              $('#map_latitude').val(latitude);
-              $('#map_longitude').val(longitude);
-                  L.Icon.Default.imagePath = "/assets";
-                    var map = L.map('map').setView([latitude, longitude],17);
-                    var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-                    var osmAttrib = "Map data OpenstreetMap contributors";
-                    L.tileLayer(osmUrl,{
-                      attribution: osmAttrib,
-                      maxZoom: 20,
-                    }).addTo(map);
+	<!-- モーダル -->
+	<div class="modal fade" id="mapModal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-body">
+	      <div id="map"></div><!-- map -->
 
-                    var marker = L.marker([latitude, longitude]).addTo(map);
-
-                    map.on("click",function(e){
-                      marker.setLatLng(e.latlng);
-                      $('#map_latitude').val(e.latlng.lat);
-                      $('#map_longitude').val(e.latlng.lng);
-                    });
-
-              </script>
-
-
-        <label for="">画像</label>
-        <p><%= image_tag post.image1.url ,style:"width:300px;" unless post.image1.blank?%></p>
-        <p><%= image_tag post.image2.url ,style:"width:300px;" unless post.image2.blank?%></p>
-        <p><%= image_tag post.image3.url ,style:"width:300px;" unless post.image3.blank? %></p>
-
+					<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+			</div>
+		</div>
+	</div><!-- モーダルここまで-->
+    <%if post.image1? %> <!-- カルーセル -->
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+      		<%= image_tag post.image1.url,class:"swiper-slide"  unless post.image1.blank?%>
+      		<%= image_tag post.image2.url,class:"swiper-slide"   unless post.image2.blank?%>
+      		<%= image_tag post.image3.url,class:"swiper-slide"  unless post.image3.blank? %>
       </div>
+			    <div class="swiper-pagination"></div>
+    </div>
 
 
-
-     <% end %>
+    <% end %><!-- カルーセルここまで -->
+		<div class="post-text">
+		    <%= simple_format post.text %>
+		</div>
+<!-- コメント機能 -->
+  <% if logged_in? %>
+    <%= form_for @comment, url: posts_comments_path  do |f| %>
+      <%= f.text_field :body %>
+      <%= f.hidden_field :post_id, :value => post.id %>
+      <%= f.hidden_field :user_id, :value => @user.id %>
+      <%= f.submit "コメント", class: "btn btn-primary" %>
+    <% end %>
+  <% end %>
+<% if @comments.present? %>
+  <% @comments.each do |comment| %>
+    <%=  comments.body %>
+  <% end %>
 <% end %>
+
+  <% end %>
+</div>
+    </div><!-- パネルここまで -->
+
+<!-- ポストここまで -->
+
+  <script>
+    var swiper = new Swiper('.swiper-container', {
+      loop: true,
+     pagination: {
+       el: '.swiper-pagination',
+     },
+   });
+    function map_function(latitude,longitude){
+
+      // $('#map_latitude').val(latitude);
+      // $('#map_longitude').val(longitude);
+        // L.Icon.Default.imagePath = "/assets";
+          var map = L.map('map').setView([latitude, longitude],17);
+          var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+          var osmAttrib = "Map data OpenstreetMap contributors";
+            L.tileLayer(osmUrl,{
+              attribution: osmAttrib,
+              maxZoom: 20,
+              }).addTo(map);
+                var marker = L.marker([latitude, longitude]).addTo(map);
+                map.on("click",function(e){
+                  marker.setLatLng(e.latlng);
+                  // $('#map_latitude').val(e.latlng.lat);
+                  // $ ('#map_longitude').val(e.latlng.lng);
+            });
+          }
+  </script>
+
+      <style type="text/css">
+          #map {
+                height:400px;
+                width: 100%;
+                }
+                .swiper-wrapper img{
+                  width:100%;
+                }
+
+      </style>

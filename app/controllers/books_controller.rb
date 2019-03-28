@@ -1,6 +1,7 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy]
-  before_action :duplicate_ban, only: [:new, :create]
+  #before_action :duplicate_ban, only: [:new, :create]
+
 
   # GET /books
   # GET /books.json
@@ -12,6 +13,8 @@ class BooksController < ApplicationController
   # GET /books/1.json
   def show
     @book = Book.find_by(id: params[:id])
+    @user = User.find_by(id: @book.user_id)
+    @comment = Comment.new
   end
 
   # GET /books/new
@@ -21,6 +24,7 @@ class BooksController < ApplicationController
 
   # GET /books/1/edit
   def edit
+
   end
 
   # POST /books
