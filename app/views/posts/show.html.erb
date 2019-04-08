@@ -5,6 +5,7 @@
       <h1>
         <%= gravatar_for @post.user %>
         <%= @post.user.name %>
+        	
       </h1>
     </section>
   </aside>
@@ -50,6 +51,37 @@
     <p><%= image_tag @post.image1.url ,style:"width:300px;" unless @post.image1.blank?%></p>
     <p><%= image_tag @post.image2.url ,style:"width:300px;" unless @post.image2.blank?%></p>
     <p><%= image_tag @post.image3.url ,style:"width:300px;" unless @post.image3.blank? %></p>
+
+
+    <!-- コメント機能 -->
+      <% if logged_in? %>
+        <%= form_for @comment, url: posts_comments_path  do |f| %>
+          <%= f.text_field :body %>
+          <%= f.hidden_field :post_id, :value => @post.id %>
+          <%= f.hidden_field :user_id, :value => current_user.id %>
+          <%= f.submit "コメント", class: "btn btn-primary" %>
+        <% end %>
+      <% end %>
+
+      <% @comments.each do |comment| %>
+      <div class="panel">
+        <%= comment.user.name  %>
+        <%= comment.updated_at  %>
+        <%= comment.body  %>
+        </div>
+      <% end %>
+
+
+      <!-- いいね機能 -->
+      <% if current_user.nices.find_by(post_id: @post.id) %>
+        <%= link_to nice_path(post_id: @post.id), method: :delete, remote: true do %>
+            <div class = "iine__button">❤️<%= @post.nices.count %></div>
+        <% end %>
+      <% else %>
+        <%= link_to nices_path(post_id: @post.id), method: :post, remote: true do %>
+            <div class = "iine__button">♡️<%= @post.nices.count %></div>
+        <% end %>
+      <% end %>
 
   </div>
 </div>

@@ -16,7 +16,8 @@
 
   <div class="field">
     <%= form.label :progress %>
-    <%= form.check_box :progress, {:checked => true}, true, false %>
+    進行中：<%= form.radio_button :progress, :false,{checked: true} %>
+    旅の終わり：<%= form.radio_button :progress, :true,{} %>
   </div>
 
   <div class="field">

@@ -1,0 +1,18 @@
+current directory: /Users/reimi/voyager/vendor/bundle/ruby/2.4.0/gems/debase-0.2.2/ext/attach
+/Users/reimi/.rbenv/versions/2.4.1/bin/ruby -r ./siteconf20190331-34649-bl1zcq.rb extconf.rb
+checking for vm_core.h... no
+checking for vm_core.h... no
+checking for vm_core.h... yes
+creating Makefile
+
+current directory: /Users/reimi/voyager/vendor/bundle/ruby/2.4.0/gems/debase-0.2.2/ext/attach
+make "DESTDIR=" clean
+
+current directory: /Users/reimi/voyager/vendor/bundle/ruby/2.4.0/gems/debase-0.2.2/ext/attach
+make "DESTDIR="
+compiling attach.c
+linking shared-object attach.bundle
+
+current directory: /Users/reimi/voyager/vendor/bundle/ruby/2.4.0/gems/debase-0.2.2/ext/attach
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 attach.bundle ./.gem.20190331-34649-xxra0x

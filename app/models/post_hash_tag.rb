@@ -1,4 +1,4 @@
 class PostHashTag < ApplicationRecord
-  belongs_to :post#
-
+    has_many :post
+    has_many :hashTag
 end

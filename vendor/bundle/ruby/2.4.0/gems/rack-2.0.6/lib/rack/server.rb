@@ -204,6 +204,7 @@ module Rack
     def default_options
       environment  = ENV['RACK_ENV'] || 'development'
       default_host = environment == 'development' ? 'localhost' : '0.0.0.0'
+      #default_host = environment == 'development' ? 'localhost' : '127.0.0.1'
 
       {
         :environment => environment,

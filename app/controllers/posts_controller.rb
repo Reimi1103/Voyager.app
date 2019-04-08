@@ -5,13 +5,18 @@ class PostsController < ApplicationController
   # GET /posts.json
   def index
     @posts = Post.all
+    @post = Post.new
   end
 
   # GET /posts/1
   # GET /posts/1.json
   def show
-    @posts = Post.find_by(id: params[:id])
+  @post = Post.find(params[:id])
+  @comments = @post.comments
+  @comment = Comment.new
+  @nice = Nice.new
   end
+
 
   # GET /posts/new
   def new
@@ -27,12 +32,18 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.new(post_params)
     @post.book_id = params[:book_id]
-    if @post.save
-      redirect_to book_path(@post.book_id), notice: 'Post was successfully created.'
-    else
-      render :new
-    end
+    @post.save
+
+
+    @postHashTag = PostHashTag.new
+    @postHashTag.tag = postHashTag_params[:tag]
+    @postHashTag.user_id = current_user[:id]
+    @postHashTag.save
+
+    redirect_to book_post_path(@post.book_id,@post.id)
   end
+
+
 
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
@@ -68,4 +79,9 @@ class PostsController < ApplicationController
     def post_params
       params.require(:post).permit(:user_id, :text, :image1, :image2, :image3, :longitude, :latitude, :book_id)
     end
+
+    def postHashTag_params
+      params.require(:postHashTag).permit(:tag)
+end
+
 end

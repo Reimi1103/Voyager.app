@@ -1,10 +1,9 @@
 <div class="container">
 <div class="bookCover"><!-- 概要　-->
     <%= image_for(@user) %>
-    <%= @user.name %>
-
+    <%= link_to @user.name,user_path(@user) %>
+ 
     <div class="bookCover-image">
-
     <%= image_tag @book.bookCover.url, width:"300px" %>
       <!---
       <p class="label"><#%= @book.title %></p>
@@ -64,24 +63,27 @@
 		<div class="post-text">
 		    <%= simple_format post.text %>
 		</div>
-<!-- コメント機能 -->
-  <% if logged_in? %>
-    <%= form_for @comment, url: posts_comments_path  do |f| %>
-      <%= f.text_field :body %>
-      <%= f.hidden_field :post_id, :value => post.id %>
-      <%= f.hidden_field :user_id, :value => @user.id %>
-      <%= f.submit "コメント", class: "btn btn-primary" %>
-    <% end %>
+
+
+</div>
+<a href="<%= @book.id %>/posts/<%= post.id %>">
+<button type="button" class="btn btn-default" data-dismiss="modal">詳細</button>
+</a>
+
+<!-- いいね機能 -->
+<% if current_user.nices.find_by(post_id: post.id) %>
+  <%= link_to nice_path(post_id: post.id), method: :delete, remote: true do %>
+      <div class = "iine__button">❤️<%= post.nices.count %></div>
   <% end %>
-<% if @comments.present? %>
-  <% @comments.each do |comment| %>
-    <%=  comments.body %>
+<% else %>
+  <%= link_to nices_path(post_id: post.id), method: :post, remote: true do %>
+      <div class = "iine__button">♡️<%= post.nices.count %></div>
   <% end %>
 <% end %>
 
-  <% end %>
-</div>
     </div><!-- パネルここまで -->
+
+    <% end %>
 
 <!-- ポストここまで -->
 

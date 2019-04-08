@@ -14,7 +14,10 @@ class BooksController < ApplicationController
   def show
     @book = Book.find_by(id: params[:id])
     @user = User.find_by(id: @book.user_id)
-    @comment = Comment.new
+    @nice = Nice.new
+
+    #@Comments = Comment.find_by(id: @user.post_id)
+
   end
 
   # GET /books/new
@@ -53,8 +56,8 @@ class BooksController < ApplicationController
         prog =false
       end
       @book.progress = prog
-      # if @book.update(book_params)
-      if @book.save
+      if @book.update_attributes(book_params)
+      # if @book.save
         format.html { redirect_to @book, notice: 'Book was successfully updated.' }
         format.json { render :show, status: :ok, location: @book }
       else
@@ -82,7 +85,7 @@ class BooksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
-      params.require(:book).permit(:user_id, :title, :prologue, :bookCover, :progress, :schedule)
+      params.require(:book).permit(:user_id, :title, :prologue, :bookCover, :schedule)
     end
     def duplicate_ban
       if current_user.books.map(&:progress).include?(nil)

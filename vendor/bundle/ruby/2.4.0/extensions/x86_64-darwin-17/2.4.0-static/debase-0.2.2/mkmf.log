@@ -1,0 +1,55 @@
+have_header: checking for vm_core.h... -------------------- no
+
+"clang -o conftest -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/x86_64-darwin17 -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/ruby/backward -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0 -I. -I/Users/reimi/.rbenv/sources/2.4.1/ruby-2.4.1 -I/Users/reimi/.rbenv/versions/2.4.1/include  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT    -O3 -Wno-error=shorten-64-to-32  -pipe conftest.c  -L. -L/Users/reimi/.rbenv/versions/2.4.1/lib -L. -L/Users/reimi/.rbenv/versions/2.4.1/lib  -fstack-protector -L/usr/local/lib     -lruby-static -framework CoreFoundation  -lpthread -ldl -lobjc "
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main(int argc, char **argv)
+4: {
+5:   return 0;
+6: }
+/* end */
+
+"clang -E -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/x86_64-darwin17 -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/ruby/backward -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0 -I. -I/Users/reimi/.rbenv/sources/2.4.1/ruby-2.4.1 -I/Users/reimi/.rbenv/versions/2.4.1/include  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT    -O3 -Wno-error=shorten-64-to-32  -pipe  conftest.c -o conftest.i"
+conftest.c:3:10: fatal error: 'vm_core.h' file not found
+#include <vm_core.h>
+         ^~~~~~~~~~~
+1 error generated.
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <vm_core.h>
+/* end */
+
+--------------------
+
+have_header: checking for vm_core.h... -------------------- no
+
+"clang -E -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/x86_64-darwin17 -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/ruby/backward -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0 -I. -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/ruby-2.4.1-p111  -O3 -Wno-error=shorten-64-to-32  -pipe  conftest.c -o conftest.i"
+conftest.c:3:10: fatal error: 'vm_core.h' file not found
+#include <vm_core.h>
+         ^~~~~~~~~~~
+1 error generated.
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <vm_core.h>
+/* end */
+
+--------------------
+
+have_header: checking for vm_core.h... -------------------- yes
+
+"clang -E -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/x86_64-darwin17 -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/ruby/backward -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0 -I. -I/Users/reimi/voyager/vendor/bundle/ruby/2.4.0/gems/debase-ruby_core_source-0.10.4/lib/debase/ruby_core_source/ruby-2.4.1-p111  -O3 -Wno-error=shorten-64-to-32  -pipe  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <vm_core.h>
+/* end */
+
+--------------------
+

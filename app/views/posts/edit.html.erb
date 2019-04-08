@@ -1,6 +1,86 @@
 <h1>Editing Post</h1>
 
-<%= render 'form', post: @post %>
+<%= form_for @post,url: book_post_path(@post.id) do |form| %>
+  <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
 
-<%= link_to 'Show', @post %> |
-<%= link_to 'Back', posts_path %>
+      <ul>
+      <% @post.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :text %>
+    <%= form.text_area :text,class: "form-control" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :image1 %>
+    <%= form.file_field :image1 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :image2 %>
+    <%= form.file_field :image2 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :image3 %>
+    <%= form.file_field :image3 %>
+  </div>
+
+  <%= hidden_field_tag "post[latitude]","",id: "map_latitude" %>
+  <%= hidden_field_tag "post[longitude]","",id: "map_longitude" %>
+  <div id="map"></div>
+    <style type="text/css">
+      #map {
+        height:400px;
+      }
+    </style>
+    <script type="text/javascript">
+      var latitude = 35.679
+      var longitude = 139.732
+
+      $('#map_latitude').val(latitude);
+      $('#map_longitude').val(longitude);
+          L.Icon.Default.imagePath = "/assets";
+          var map = L.map('map').setView([latitude, longitude],17);
+          var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+          var osmAttrib = "Map data OpenstreetMap contributors";
+          L.tileLayer(osmUrl,{
+            attribution: osmAttrib,
+            maxZoom: 20,
+          }).addTo(map);
+
+          var marker = L.marker([latitude, longitude]).addTo(map);
+
+          map.on("click",function(e){
+            marker.setLatLng(e.latlng);
+            $('#map_latitude').val(e.latlng.lat);
+            $('#map_longitude').val(e.latlng.lng);
+          });
+
+    </script>
+
+  <!-- <div class="field">
+    <#%= form.label :longitude %>
+    <#%= form.number_field :longitude,class: "form-control"  %>
+  </div>
+
+  <div class="field">
+    <#%= form.label :latitude %>
+    <#%= form.number_field :latitude,class: "form-control"  %>
+  </div> -->
+
+  <div class="actions">
+    <%= form.submit "ポストの作成",class: "btn btn-success" %>
+  </div>
+<% end %>
+
+
+<%#= link_to 'Show', @post %> |
+<%#= link_to 'Back', posts_path %>
