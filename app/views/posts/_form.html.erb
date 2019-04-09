@@ -64,9 +64,9 @@
 
     </script>
 
-<%= form.fields_for :postHashTag do |p| %>
+<%= fields_for :postHashTag do |p| %>
       <%= p.label :hashtag %>
-      <%= p.text_area :tag,class: "form-control" %>
+      <%= p.text_field :tag,class: "form-control" %>
 
   <div class="actions">
     <%= form.submit "ポストの作成",class: "btn btn-success" %>

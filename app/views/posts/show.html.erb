@@ -56,14 +56,14 @@
     <!-- コメント機能 -->
       <% if logged_in? %>
         <%= form_for @comment, url: posts_comments_path  do |f| %>
-          <%= f.text_field :body %>
+          <%= f.text_field :comment %>
           <%= f.hidden_field :post_id, :value => @post.id %>
           <%= f.hidden_field :user_id, :value => current_user.id %>
           <%= f.submit "コメント", class: "btn btn-primary" %>
         <% end %>
       <% end %>
 
-      <% @comments.each do |comment| %>
+      <% @post.comments.each do |comment| %>
       <div class="panel">
         <%= comment.user.name  %>
         <%= comment.updated_at  %>

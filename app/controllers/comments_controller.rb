@@ -7,7 +7,6 @@ end
 
   def create
   @comment = Comment.new(comment_params)
-  @comment.user = current_user
   if @comment.save
     redirect_back(fallback_location: root_path)
   else

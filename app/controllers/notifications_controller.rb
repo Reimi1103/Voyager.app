@@ -1,4 +1,7 @@
 class NotificationsController < ApplicationController
+  before_action :correct_user,   only: [:edit, :update, :destroy]
+  #管理者だけが投稿できるようにしたい。
+
   def new
     @notice = Notification.new
   end
@@ -44,5 +47,11 @@ class NotificationsController < ApplicationController
   private
   def notice_params
     params.require(:notification).permit(:title,:text,:category,:eyecatch)
+  end
+
+  #管理者だけが投稿できるようにしたい。
+  def correct_user
+    @user = User.find(params[:id])
+    redirect_to(root_url) unless @user == current_user
   end
 end

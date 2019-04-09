@@ -1,5 +1,6 @@
 class BankAccountsController < ApplicationController
   before_action :set_bank_account, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user,   only: [:edit, :update, :destroy]
 
   # GET /bank_accounts
   # GET /bank_accounts.json
@@ -10,6 +11,8 @@ class BankAccountsController < ApplicationController
   # GET /bank_accounts/1
   # GET /bank_accounts/1.json
   def show
+    
+
   end
 
   # GET /bank_accounts/new
@@ -25,10 +28,10 @@ class BankAccountsController < ApplicationController
   # POST /bank_accounts.json
   def create
     @bank_account = BankAccount.new(bank_account_params)
-
+    @bank_account.user_id=current_user.id
     respond_to do |format|
       if @bank_account.save
-        format.html { redirect_to @bank_account, notice: 'Bank account was successfully created.' }
+        format.html { redirect_to root_path, notice: 'Bank account was successfully created.' }
         format.json { render :show, status: :created, location: @bank_account }
       else
         format.html { render :new }
@@ -64,11 +67,16 @@ class BankAccountsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_bank_account
-      @bank_account = BankAccount.find(params[:id])
+      @bank_account = BankAccount.find_by(user_id: current_user.id)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bank_account_params
-      params.require(:bank_account).permit(:bank_name, :bank_code, :branch_name, :branch_code, :bank_type, :bank_holder, :bank_number, :user_id)
+      params.require(:bank_account).permit(:bank_name, :bank_code, :branch_name, :branch_code, :bank_type, :bank_holder, :bank_number)
+    end
+
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(root_url) unless @user == current_user
     end
 end

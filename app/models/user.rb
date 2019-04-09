@@ -17,13 +17,13 @@ class User < ApplicationRecord
   end
 
 
-  def self.new_token
+  def User.new_token
     SecureRandom.urlsafe_base64
   end
 
   def remember
-    self.remember_token = new_token
-    update_attribute(:remember_digest, digest(remember_token))
+    self.remember_token = User.new_token
+    update_attribute(:remember_digest,User.digest(remember_token))
   end
 
 
@@ -62,17 +62,14 @@ class User < ApplicationRecord
   has_many :followers, through: :passive_relationships, source: :follower
 
 
-    # ユーザーをフォローする
-    def follow(other_user)
-      following << other_user
-    end
+  def follow(other_user)
+    following << other_user
+  end
   
-    # ユーザーをフォロー解除する
     def unfollow(other_user)
       active_relationships.find_by(followed_id: other_user.id).destroy
     end
-  
-    # 現在のユーザーがフォローしてたらtrueを返す
+
     def following?(other_user)
       following.include?(other_user)
     end

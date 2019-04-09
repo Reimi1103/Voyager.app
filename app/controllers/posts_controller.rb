@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user,   only: [:edit, :update, :destroy]
 
   # GET /posts
   # GET /posts.json
@@ -12,7 +13,7 @@ class PostsController < ApplicationController
   # GET /posts/1.json
   def show
   @post = Post.find(params[:id])
-  @comments = @post.comments
+  
   @comment = Comment.new
   @nice = Nice.new
   end
@@ -21,6 +22,7 @@ class PostsController < ApplicationController
   # GET /posts/new
   def new
     @post = Post.new
+    @postHashTag = PostHashTag.new
   end
 
   # GET /posts/1/edit
@@ -32,15 +34,18 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.new(post_params)
     @post.book_id = params[:book_id]
-    @post.save
+    tags = params[:postHashTag][:tag].split
+    
+    if @post.save
+      tags.each do |tag|
+        @postHashTag = PostHashTag.new(tag: tag,post_id: @post.id)
+        @postHashTag.save
+      end
+      redirect_to book_path(params[:book_id])
+    else
+      render :new
+    end
 
-
-    @postHashTag = PostHashTag.new
-    @postHashTag.tag = postHashTag_params[:tag]
-    @postHashTag.user_id = current_user[:id]
-    @postHashTag.save
-
-    redirect_to book_post_path(@post.book_id,@post.id)
   end
 
 
@@ -82,6 +87,11 @@ class PostsController < ApplicationController
 
     def postHashTag_params
       params.require(:postHashTag).permit(:tag)
-end
+    end
+
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(root_url) unless @user == current_user
+    end
 
 end

@@ -1,44 +1,53 @@
 <p id="notice"><%= notice %></p>
 
+<% if @bank_account %>
 <p>
-  <strong>Bank name:</strong>
+  <strong>Bank name</strong>
   <%= @bank_account.bank_name %>
 </p>
 
 <p>
-  <strong>Bank code:</strong>
+  <strong>Bank code</strong>
   <%= @bank_account.bank_code %>
 </p>
 
 <p>
-  <strong>Branch name:</strong>
+  <strong>Branch name</strong>
   <%= @bank_account.branch_name %>
 </p>
 
 <p>
-  <strong>Branch code:</strong>
+  <strong>Branch code</strong>
   <%= @bank_account.branch_code %>
 </p>
 
 <p>
-  <strong>Bank type:</strong>
+  <strong>Bank type</strong>
   <%= @bank_account.bank_type %>
 </p>
 
 <p>
-  <strong>Bank holder:</strong>
+  <strong>Bank holder</strong>
   <%= @bank_account.bank_holder %>
 </p>
 
 <p>
-  <strong>Bank number:</strong>
+  <strong>Bank number</strong>
   <%= @bank_account.bank_number %>
 </p>
 
+<%= link_to '編集',  edit_bank_account_path(current_user.id) %> 
+<% else %>
 <p>
-  <strong>User:</strong>
-  <%= @bank_account.user_id %>
-</p>
+  <strong>
+  ポイントを換金するために銀行情報が必要です。
+  </strong>
 
-<%= link_to 'Edit', edit_bank_account_path(@bank_account) %> |
-<%= link_to 'Back', bank_accounts_path %>
+
+
+<%= link_to '銀行情報を登録する', new_bank_account_path %> 
+ <% end %>
+
+<%= link_to 'Back', user_path %>
+
+

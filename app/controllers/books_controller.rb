@@ -1,6 +1,7 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy]
   #before_action :duplicate_ban, only: [:new, :create]
+  before_action :correct_user,   only: [:edit, :update, :destroy]
 
 
   # GET /books
@@ -35,14 +36,15 @@ class BooksController < ApplicationController
   def create
     @book = current_user.books.new(book_params)
     @book.progress = false
-    respond_to do |format|
-      if @book.save
-        format.html { redirect_to @book, notice: 'Book was successfully created.' }
-        format.json { render :show, status: :created, location: @book }
-      else
-        format.html { render :new }
-        format.json { render json: @book.errors, status: :unprocessable_entity }
+    tags = params[:bookHashTag][:tag].split
+    if @book.save
+      tags.each do |tag|
+        @bookHashTag = BookHashTag.new(tag: tag,book_id: @book.id)
+        @bookHashTag.save
       end
+      redirect_to book_path(@book.id)
+    else
+      render :new
     end
   end
 
@@ -87,10 +89,21 @@ class BooksController < ApplicationController
     def book_params
       params.require(:book).permit(:user_id, :title, :prologue, :bookCover, :schedule)
     end
+
+    def bookHashTag_params
+      params.require(:postHashTag).permit(:tag)
+    end
+
+
     def duplicate_ban
       if current_user.books.map(&:progress).include?(nil)
         #進行中のBookが存在する
         redirect_to root_path,danger: "進行中のBookがあります。"
       end
+    end
+
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(root_url) unless @user == current_user
     end
 end

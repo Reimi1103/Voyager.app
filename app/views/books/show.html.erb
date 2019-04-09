@@ -5,10 +5,7 @@
  
     <div class="bookCover-image">
     <%= image_tag @book.bookCover.url, width:"300px" %>
-      <!---
-      <p class="label"><#%= @book.title %></p>
-    </div>
--->
+
 
     <div class="book_particulars">
       <%= @book.progress %>
@@ -36,6 +33,9 @@
   <button type="button" name="button"  data-toggle="modal" data-target="#mapModal" data-backdrop="true" onClick="map_function(<%= post.latitude %>,<%= post.longitude %>)">
 <i class="fas fa-map-marker-alt" style="font-size: 30px;margin: 10px 10px 0px 20px;color: #ff0e0e;"></i>
   </button>
+  <% post.post_hash_tags.each do |tag| %>
+    <span class="btn btn-default">#<%= tag.tag %></span>
+  <% end %>
 
 
 	<!-- モーダル -->

@@ -1,0 +1,15 @@
+
+  <h3>お気に入りの本</h3>
+  <% if @books.try(:any?)  %>
+
+    <% @books.each do |book| %>
+<div class="panel panel-default">
+<%= link_to book.title,book_path(book) %>
+      <p><%= book.prologue %></p>
+      <p><%= image_tag(book.bookCover.url, :width => '300') unless book.bookCover.blank? %></p>
+      <p><%= book.progress ? "終了した旅" : "進行中の旅" %></p>
+      <p><%= book.schedule %></p>
+</div>
+    <% end %>
+    <% end %>
+

@@ -9,7 +9,9 @@
         <div class="panel-body">
         <strong><%= notice.title %></strong><br>
         <small><%= notice.category %></small><br>
-        <%= image_tag notice.eyecatch.url, style: "width: 300px;" %><br>
+        <% if notice.eyecatch? %>
+         <%= image_tag notice.eyecatch.url,  style: "width: 300px;" %><br>
+         <% end %>
         <p><%= notice.text %></p><br>
         <%= link_to "削除",notice, method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-info" %>
         <%= link_to "編集",edit_notification_path(notice), class: "btn btn-info" %>

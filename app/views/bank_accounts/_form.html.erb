@@ -13,45 +13,41 @@
 
   <div class="field">
     <%= form.label :bank_name %>
-    <%= form.text_field :bank_name %>
+    <%= form.text_field :bank_name,class:"form-control" %>
   </div>
 
   <div class="field">
     <%= form.label :bank_code %>
-    <%= form.number_field :bank_code %>
+    <%= form.number_field :bank_code,class:"form-control"  %>
   </div>
 
   <div class="field">
     <%= form.label :branch_name %>
-    <%= form.text_field :branch_name %>
+    <%= form.text_field :branch_name ,class:"form-control" %>
   </div>
 
   <div class="field">
     <%= form.label :branch_code %>
-    <%= form.number_field :branch_code %>
+    <%= form.number_field :branch_code,class:"form-control"  %>
   </div>
 
   <div class="field">
     <%= form.label :bank_type %>
-    <%= form.number_field :bank_type %>
+    <%= form.number_field :bank_type ,class:"form-control" %>
   </div>
 
   <div class="field">
     <%= form.label :bank_holder %>
-    <%= form.text_field :bank_holder %>
+    <%= form.text_field :bank_holder ,class:"form-control" %>
   </div>
 
   <div class="field">
     <%= form.label :bank_number %>
-    <%= form.number_field :bank_number %>
+    <%= form.number_field :bank_number ,class:"form-control" %>
   </div>
 
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.number_field :user_id %>
-  </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit "口座を登録する",class:"btn btn-success btn-block" %>
   </div>
 <% end %>

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :following, :followers]
+  before_action :correct_user,   only: [:edit, :update, :destroy]
 
 
   def index
@@ -53,8 +54,22 @@ class UsersController < ApplicationController
     end
   end
 
+  def following
+    @user  = User.find(params[:id])
+    @users = @user.followings
+    render 'show_follow'
+  end
 
+  def followers
+    @user  = User.find(params[:id])
+    @users = @user.followers
+    render 'show_follower'
+  end
 
+  def favorites
+    @favorites = Favorite.find_by(user_id: current_user.id)
+    @books = Book.find_by(id: @favorites.book_id)
+  end
 
   private
 
@@ -67,4 +82,13 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation,:introduction,:points,:weblink,:thaksImage)
     end
+
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(root_url) unless @user == current_user
+    end
+
+
 end
+
+

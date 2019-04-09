@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 2019_04_07_195453) do
 
   create_table "post_hash_tags", force: :cascade do |t|
     t.string "tag"
-    t.integer "user_id"
+    t.integer "post_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
