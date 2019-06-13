@@ -1,127 +1,139 @@
-<div class="container">
-<div class="bookCover"><!-- 概要　-->
-    <%= image_for(@user) %>
-    <%= link_to @user.name,user_path(@user) %>
- 
-    <div class="bookCover-image">
-    <%= image_tag @book.bookCover.url, width:"300px" %>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrxk4mWzR5KuFY6-X95rlEAnT1YhoJq5E&callback" async defer></script>
 
-
-    <div class="book_particulars">
-      <%= @book.progress %>
-			<%= simple_format @book.prologue %>
-      <strong>旅のスケジュール</strong>
-      <%= @book.schedule %>
-
-
-
-    <%= link_to 'Edit', edit_book_path(@book) %> |
-    <%= link_to 'Back', books_path %>
-    <%= link_to "ポストの作成",new_book_post_path(@book),class: "btn btn-info" %>
+<!------------------------------------ 表紙　------------------------------------>
+<div class="row flex-column align-items-center">
+  <div class="col-sm-12 col-md-9 no-gutters">
+    <div class="card bg-dark text-white" style="border:none;">
+      <div class="card-img" art="ブックカバー">
+          <%= image_tag(@book.bookCover.url,:class=>"w-100") %><!-- ブックカバー　-->
+        <div class="card-img-overlay">
+          <% if @user.image? %>
+            <%= link_to user_path(@user) do %>
+              <%= image_tag(@user.image.url,width:'50') %><!-- アイコン　-->
+            <% end %>
+          <% end %>
+          <%= @user.name %><!-- 名前　-->
+          <% if @book.schedule? %>
+            <p>旅のスケジュール</p>
+            <%= @book.schedule %><br><!-- スケジュール　-->
+          <% end %>
+          <% if @book.progress==false%><!-- 進行状況　-->
+            <span class="badge badge-danger">更新中</span>
+          <% end %>
+        </div><!-- card-img-overlay -->
+      </div><!-- card-img -->
+    </div><!-- card -->
+    <div style="margin:10px; font-size:0.8em;">
+      <%= simple_format @book.prologue %><!-- プロローグ　-->
+      <% @book.book_hash_tags.each do |tag| %>
+        <span class="btn btn-default"><%= tag.tag %></span><!-- ハッシュタグ　-->
+      <% end %>
+      <% if @book.user==current_user %>
+        <%= link_to '編集', edit_book_path(@book) , { :class => "btn btn-primary rounded-pill"} %> <!-- ブック編集ボタン　-->
+        <%= link_to "ポストの作成",new_book_post_path(@book),class: "btn btn-info" %><!-- ポスト投稿ボタン　-->
+      <% end %>
     </div>
-	</div>
-	<hr>
+    <hr>
+  </div><!-- col -->
+</div><!-- row -->
 
+<!------------------------------------ ポスト　------------------------------------>
+<%# if Date.today == post.created_at %><%#end%>
 
-<!-- ポスト　-->
-<% @book.posts.each do |post| %>
+<div class="row flex-column align-items-center">
+  <div class="col-sm-12 col-md-9">
+<!------------------------------------ カード　------------------------------------>
+    <% @book.posts.each do |post| %>
+      
+      <div class="card shadow" style="margin:30px auto;">
+        <div class="bg-dark" style="padding:0;">
+            <div class="row justify-content-between">
+              <div class="col-4 text-white">
+                <%= time_ago_in_words(post.created_at)%>前
+              </div>
+              <div class="col-4">
+                <button class="text-right" type="button" name="button"  data-toggle="modal" data-target="#mapModal" data-backdrop="true" onClick="map_function(<%= post.latitude %>,<%= post.longitude %>)">
+                  <i class="fas fa-map-marker-alt" style="font-size: 30px;margin: 10px 10px 0px 20px;color: #ff0e0e;"></i>
+                </button>
+              </div>
+            </div>
+        </div><!-- header閉じ -->
 
+        <div class="bg-white" style="padding:0;"><!-- google map -->
+          <% if post.longitude.present? %>
+              <div id="map_<%= post.id %>"></div>
+              <style>
+                  #map_<%= post.id %>{
+                    height: 200px;
+                  }
+              </style>
+              <script>
+                  // let mapInstance; //この変数はmap.js.erbでも使うのでタイプミスに注意
+                  $(function(){
+                    initMap_<%= post.id %>();
+                    function initMap_<%= post.id %>(){
+                      mapdisplay_<%= post.id %>();
+                    }
+                    function mapdisplay_<%= post.id %>(){
+                      var latitude_<%= post.id %> = <%= post.latitude.to_f %>;
+                      var longitude_<%= post.id %> = <%= post.longitude.to_f %>;
+                      var latlng_<%= post.id %> = {lat: latitude_<%= post.id %>, lng: longitude_<%= post.id %>};
+                      var map_<%= post.id %> = new google.maps.Map(document.getElementById("map_<%= post.id %>"),{
+                        center: latlng_<%= post.id %>,
+                        zoom: 14,
+                        controlSize: 17
+                      });
+                      var marker = new google.maps.Marker({
+                        position: latlng_<%= post.id %>,
+                        map: map_<%= post.id %>,
+                        })
+                    };
+                  });
+              </script>
+          <% end %>
+        </div><!-- mapここまで　-->
+        <a class="card" href="<%= @book.id %>/posts/<%= post.id %>">
+            <div style="padding:5px;"><!-- 本文 -->
+                <%= simple_format post.text %>
+            </div>
 
-<div class="panel panel-default"><!-- パネル　-->
-<div class="panel-body">
-	<!-- マーカー -->
-  <button type="button" name="button"  data-toggle="modal" data-target="#mapModal" data-backdrop="true" onClick="map_function(<%= post.latitude %>,<%= post.longitude %>)">
-<i class="fas fa-map-marker-alt" style="font-size: 30px;margin: 10px 10px 0px 20px;color: #ff0e0e;"></i>
-  </button>
-  <% post.post_hash_tags.each do |tag| %>
-    <span class="btn btn-default">#<%= tag.tag %></span>
-  <% end %>
-
-
-	<!-- モーダル -->
-	<div class="modal fade" id="mapModal" tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-body">
-	      <div id="map"></div><!-- map -->
-
-					<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-			</div>
-		</div>
-	</div><!-- モーダルここまで-->
-    <%if post.image1? %> <!-- カルーセル -->
-    <div class="swiper-container">
-      <div class="swiper-wrapper">
-      		<%= image_tag post.image1.url,class:"swiper-slide"  unless post.image1.blank?%>
-      		<%= image_tag post.image2.url,class:"swiper-slide"   unless post.image2.blank?%>
-      		<%= image_tag post.image3.url,class:"swiper-slide"  unless post.image3.blank? %>
-      </div>
-			    <div class="swiper-pagination"></div>
-    </div>
-
-
-    <% end %><!-- カルーセルここまで -->
-		<div class="post-text">
-		    <%= simple_format post.text %>
-		</div>
-
-
-</div>
-<a href="<%= @book.id %>/posts/<%= post.id %>">
-<button type="button" class="btn btn-default" data-dismiss="modal">詳細</button>
-</a>
-
-<!-- いいね機能 -->
-<% if current_user.nices.find_by(post_id: post.id) %>
-  <%= link_to nice_path(post_id: post.id), method: :delete, remote: true do %>
-      <div class = "iine__button">❤️<%= post.nices.count %></div>
-  <% end %>
-<% else %>
-  <%= link_to nices_path(post_id: post.id), method: :post, remote: true do %>
-      <div class = "iine__button">♡️<%= post.nices.count %></div>
-  <% end %>
-<% end %>
-
-    </div><!-- パネルここまで -->
-
+            <div style="padding:0;"><!-- 画像 -->
+                <%= image_tag post.image1.url,class:"swiper-slide"  unless post.image1.blank? %><!-- post画像 -->
+                <%= image_tag post.image2.url,class:"swiper-slide"   unless post.image2.blank? %>
+                <%= image_tag post.image3.url,class:"swiper-slide"  unless post.image3.blank? %>
+            </div>
+        </a>
+          <div class="row">
+            <% post.post_hash_tags.each do |tag| %><!-- ハッシュタグ -->
+              <div class="btn btn-default"><%= tag.tag %></div>
+            <% end %>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <% if logged_in? %>
+                  <li class="nice_<%= post.id %>">
+                    <!-- いいね機能 -->
+                    <% unless post.nicing_users.include?(current_user) %>
+                      <%= render "/nices/heart",post: post %>
+                    <% else %>
+                      <%= render "/nices/heart_favo",post: post %>
+                    <% end %>
+                    <!-- いいね機能 終了　-->
+                  </li>
+              <% end %>
+            </div>
+            <div class="col-2">
+              <p>コメント数表示</p>
+            </div>
+            <div class="offset-5 col-3">
+              <button type="button" class="btn btn-link">編集(未実装）</button><!-- 編集ボタン -->
+            </div>
+              
+          </div>
+        </div>
     <% end %>
-
-<!-- ポストここまで -->
-
-  <script>
-    var swiper = new Swiper('.swiper-container', {
-      loop: true,
-     pagination: {
-       el: '.swiper-pagination',
-     },
-   });
-    function map_function(latitude,longitude){
-
-      // $('#map_latitude').val(latitude);
-      // $('#map_longitude').val(longitude);
-        // L.Icon.Default.imagePath = "/assets";
-          var map = L.map('map').setView([latitude, longitude],17);
-          var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-          var osmAttrib = "Map data OpenstreetMap contributors";
-            L.tileLayer(osmUrl,{
-              attribution: osmAttrib,
-              maxZoom: 20,
-              }).addTo(map);
-                var marker = L.marker([latitude, longitude]).addTo(map);
-                map.on("click",function(e){
-                  marker.setLatLng(e.latlng);
-                  // $('#map_latitude').val(e.latlng.lat);
-                  // $ ('#map_longitude').val(e.latlng.lng);
-            });
-          }
-  </script>
-
-      <style type="text/css">
-          #map {
-                height:400px;
-                width: 100%;
-                }
-                .swiper-wrapper img{
-                  width:100%;
-                }
-
-      </style>
+    <!------------------------------------ カード　------------------------------------>
+  </div>
+</div>
+      
+<!-- カード閉じ -->

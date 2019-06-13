@@ -80,7 +80,6 @@ def mock_pry(*args)
   output = StringIO.new
 
   redirect_pry_io(input, output) do
-    binding.pry
   end
 
   output.string

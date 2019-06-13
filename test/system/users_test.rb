@@ -20,7 +20,7 @@ class UsersTest < ApplicationSystemTestCase
     fill_in "Name", with: @user.name
     fill_in "Password digest", with: @user.password_digest
     fill_in "Points", with: @user.points
-    fill_in "Thaksimage", with: @user.thaksImage
+    fill_in "Thanksimage", with: @user.thanksImage
     fill_in "Weblink", with: @user.weblink
     click_on "Create User"
 
@@ -38,7 +38,7 @@ class UsersTest < ApplicationSystemTestCase
     fill_in "Name", with: @user.name
     fill_in "Password digest", with: @user.password_digest
     fill_in "Points", with: @user.points
-    fill_in "Thaksimage", with: @user.thaksImage
+    fill_in "Thanksimage", with: @user.thanksImage
     fill_in "Weblink", with: @user.weblink
     click_on "Update User"
 

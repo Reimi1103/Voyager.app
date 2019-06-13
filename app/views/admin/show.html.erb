@@ -1,0 +1,8 @@
+<h1>管理者ページ</h1>
+
+<% if @withdrawal.any? %>
+<% @withdrawal.each do |w| %>
+<%= @withdrawal.user_id %>
+<%= @withdrawal.withdrawal_point %>
+<% end %>
+<% end %>

@@ -1,50 +1,117 @@
 <% provide(:title, @user.name) %>
-<div class="container">
-    <div class="col-md-8">
-      <div class="user-header">
-      <div class="user_image">
-          <%= gravatar_for @user %>
-      </div>
- <section class="stats">
-      <%= render 'shared/stats' %>
-      </section>
+<!--------------------- アイコン〜ウェブリンクまで --------------------->
 
-      
-      <%= render 'follow_form' if logged_in? %>
-    
-      </div>
-
-     </div>
-<!--  自分のプロフィールの場合は編集ボタンをだす -->
-      <% if current_user?(@user) %>
-       <li><%= link_to "プロフィール編集", edit_user_path %></li>
-       <li><%= link_to "銀行情報", bank_account_path %></li>
-       <li><%= link_to "本を作る", new_book_path %></li>
-        <% end %>
-       <li><%= link_to "本棚", favorites_user_path %></li>
-
-    </div>
-<!-- -->
-
-<div class="container">
-    <div class="row col-md-8">
-      <%= @user.name %>
-      <% if @user.introduction? %>
-      <%= @user.introduction %>
-      <% end %>
-      <% if @user.weblink? %>
-      <%= @user.weblink %>
-      <% end %>
-  <hr>
-
-  <h3>Book</h3>
-      <% if @user.books.any? %>
-      <% @books.each do |book| %>
-    <div class="panel">
-
-  <%= link_to book.title,book_path(book) %>
-</div>
+<div class="row">
+  <div class="col-12 col-md-8 offset-md-2 text-center">
+    <% if @user.image? %><!-- アイコン -->
+      <%= image_tag(@user.image.url,width:'50',:class => "icon") %><br>
     <% end %>
+    <%= @user.name %><!-- 名前 -->
+    <div class="text-left" style="font-size:0.8rem">
+      <% if @user.introduction? %>
+        <%= simple_format(@user.introduction) %><!-- 自己紹介　-->
+      <% end %>
+      <% if @user.weblink? %><!-- ウェブサイト -->
+        <%= @user.weblink %><!-- ウェブサイト-->
+      <% end %>
+    </div>
+  </div>
+</div>
+<!--------------------- フォロワー数とユーザーメニュー --------------------->
+<div class="row">
+  <div class="col-7 col-md-5 offset-md-2">
+    <section class="stats align-middle" style="margin-top:8px;">
+      <span><%= render 'shared/stats' %></span>
+    </section>
+  </div>
+  <div class="col-5  col-md-3 text-right ">
+    <% if current_user?(@user) %>
+      <div class="btn-group dropleft">
+        <button class="btn btn-outline-primary rounded-circle p-0 " style="width:2rem; height:2rem;" type="button" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        ⋯
+        </button>
+        <div class="dropdown-menu" aria-labelledby="userMenu">
+          <div class="dropdown-item"><%= link_to "アカウント設定", edit_user_path %></div>
+          <div class="dropdown-item"><%= link_to "お気に入り一覧", favorites_user_path %></div>
+          <div class="dropdown-item"><%= link_to "銀行情報", bank_account_path %></div>
+          <div class="dropdown-item"><%= link_to "本を作る", new_book_path %></div>
+          <div class="dropdown-item"><%= link_to "出金申請", new_withdrawal_path %></div>
+          <div class="dropdown-item"><%= link_to "本棚", favorites_user_path %></div>
+        </div>
+      </div>
     <% end %>
   </div>
- </div>
+  <%= render 'follow_form' if logged_in? %>
+</div>
+<br>
+  <!--------------------- タブメニュー --------------------->
+<div class="row">
+  <div class="col-sm-12 col-md-8 offset-md-2">
+    <ul class="nav nav-tabs nav-fill">
+        <li class="nav-item no-gutters"><a class="nav-link" href="#tab1" data-toggle="tab">更新中</a></li>
+        <li class="nav-item no-gutters"><a class="nav-link active" href="#tab2" data-toggle="tab">これまでの旅</a></li>
+    </ul>
+
+      <!--------------------- タブ（更新中） --------------------->
+    <div class="tab-content" style="width:100%;">
+      <div id="tab1" class="tab-pane">
+        <% if @activeBook.present? %>
+          <%= link_to book_path(@activeBook.id),style: "color: #000;" do %>
+            <div class="card ">
+              <div class="card-img" art="ブックカバー">
+                <%= image_tag @activeBook.bookCover.url,style: "width: 100%;" unless @activeBook.bookCover.blank? %>
+              </div>
+              <div class="card-body p-2">
+                <strong><%= @activeBook.title %></strong><br>
+                <div style="font-size:0.8em">
+                  <%= @activeBook.prologue%>
+                  <div class="row"><!-- いいねとコメント数 -->
+                    <div class="col-3">
+                    total ❤️<%= @activeBook.total_nice_count %>
+                    </div>
+                    <div class="col-3">
+                      total コメント数<%= @activeBook.total_comment_count %>
+                    </div>
+                  </div><!--row いいねとコメント数 -->
+                </div>
+              </div>
+            </div><!--card -->
+          <% end %>
+        <% else %>
+          <%= image_tag 'voyager_illustration.jpg' ,class:"w-100"%>
+          <p>まだないよ</p>
+        <% end %> 
+      </div> <!-- tab1 -->
+        <!--------------------- タブ（過去のログ） --------------------->
+      <div id="tab2" class="tab-pane active">
+        <% if @bookLogs.present? %>
+          <%= render partial: "layouts/log_list",collection: @bookLogs %>
+        <% else%>
+          <%= image_tag 'voyager_illustration.jpg' ,class:"w-100" %>
+          <p>まだないよ</p>
+        <% end %>
+      </div><!-- tab2 -->
+    </div><!-- tab-content -->
+    <!--------------------- タブここまで --------------------->
+  </div><!-- col -->
+</div><!-- row(タブ) -->
+
+<hr>
+<script>
+$(function(){
+  if (<%= params[:modal_flag] %>){
+    $('#modal').modal('show');
+  }
+});
+</script>
+
+<div class="modal" id="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+　    <p>ありがとうございます。</p>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+      </div><!-- /.modal-footer -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

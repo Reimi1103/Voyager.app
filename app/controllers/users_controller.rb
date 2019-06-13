@@ -7,11 +7,6 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
-  def show
-    @user = User.find(params[:id])
-    @books = @user.books
-  end
-
   def new
     @user = User.new
   end
@@ -24,14 +19,17 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @user.image = open("#{Rails.root}/public/human.jpeg")
       if @user.save
         log_in @user
         redirect_to root_path,success:"登録完了"
-        else
+      else
           flash[:danger] = "登録失敗"
-          render 'new'
+          render 'new'        
       end
   end
+
+
 
   def update
     respond_to do |format|
@@ -46,12 +44,44 @@ class UsersController < ApplicationController
   end
 
 
+  def show
+    @user = User.find(params[:id])
+    @books = @user.books
+    @activeBook =@books.find_by(progress: false)
+    @log = @books.where(progress: true)
+    @bookLogs = @log.all.order(created_at: :desc)
+  end
+
+
+
+  def charge
+    @amount = 500#引き落とす金額
+    @charge = 500
+    ###この操作で、Stripe から帰ってきた情報を取得します
+    customer = Stripe::Customer.create({
+      email: params[:stripeEmail],#emailは暗号化されずに受け取れます
+      source: params[:stripeToken],
+    })
+
+    Stripe::Charge.create({
+      customer: customer.id,
+      amount: @amount,
+      description: 'Rails Stripe customer',
+      currency: 'jpy',
+    })
+    @charge_modal_flag = true
+
+    current_user.point += @charge.to_i
+    current_user.save
+    redirect_to user_path(id: current_user,modal_flag: @charge_modal_flag)
+  end
+
+
+
   def destroy
-    @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    User.find(params[:id]).destroy
+    flash[:success] = "User deleted"
+    redirect_to root_path
   end
 
   def following
@@ -67,21 +97,25 @@ class UsersController < ApplicationController
   end
 
   def favorites
-    @favorites = Favorite.find_by(user_id: current_user.id)
-    @books = Book.find_by(id: @favorites.book_id)
+    @books=current_user.favorite_books
   end
 
   private
 
     # Use callbacks to share common setup or constraints between actions.
+    #def set_user
+    # @user = User.find(params[:id])
+    #end
+
     def set_user
       @user = User.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation,:introduction,:points,:weblink,:thaksImage)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation,:introduction,:points,:weblink,:image,:thanksImage)
     end
+
 
     def correct_user
       @user = User.find(params[:id])

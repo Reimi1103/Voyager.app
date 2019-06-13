@@ -10,7 +10,6 @@ end
 
 def c
   u = 50
-  binding.pry
   puts "hi"
   puts "bye"
   v = 20

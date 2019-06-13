@@ -1,0 +1,19 @@
+
+#--------  BankAccount ----------#
+ja:
+  no_bank_name: "銀行名を入力してください。"
+
+#--------  Book ----------#
+
+  no_title: "旅行記録のタイトルを入力してください。" 
+  no_prologue: "旅行記録の説明を入力してください。" 
+  no_bookCover: "旅行記録の表紙を設定してください。" 
+  no_schedule: "旅行の日程を入力してください。"
+  length_error: "10文字以上180文字以内にしてください。"
+
+#--------  Comment ----------#
+
+  no_comment: "コメントを入力してください。"
+  Please_set_more_than_10point: "10ポイントから贈れます。"
+  Insufficient points: "ポイントが足りません。"
+

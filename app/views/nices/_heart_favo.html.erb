@@ -1,0 +1,5 @@
+<%= link_to destroy_nice_path(post_id: post.id),method: :delete,remote: true ,class:"heart_favo_icon" do %>
+    <div style="margin-left:2em;">
+        <%= post.nices.count%>
+    </div>
+<% end %>

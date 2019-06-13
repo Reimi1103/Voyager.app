@@ -1,4 +1,4 @@
 <%= form_for(current_user.active_relationships.find_by(followed_id: @user.id), html: { method: :delete }) do |f| %>
   <%= f.hidden_field :followed_id,value: @user.id %>
-  <%= f.submit "Unfollow", class: "btn btn-large btn-default follow-btn" %>
+  <%= f.submit "フォロー中", class: "btn btn-primary btn-sm",style: "width:75%; hight:80%; font-size:0.7em;" %>
 <% end %>

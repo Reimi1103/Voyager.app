@@ -1,0 +1,45 @@
+<% provide(:title, '出勤申請') %>
+<h1>出金申請</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@withdrawal) do |f| %>
+      <% if @withdrawal.errors.any? %>
+       <div id="error_explanation">
+       <h2><%= pluralize(@withdrawal.errors.count, "error") %> prohibited this bank_account from being saved:</h2>
+       <ul>
+       <% @withdrawal.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+       <% end %>
+       </ul>
+      </div>
+      <% end %>
+    
+    <%= f.label :ニックネーム %><br>
+    <%= current_user.name %><br>
+    <br>
+    <%= f.label :所持ポイント %><br>
+    <%= current_user.point %><br>
+    <br>
+    <%= f.label :出金申請ポイント %><br>
+    <%= f.number_field :withdrawal_point, class: 'form-control',required: true %><br>
+
+
+
+      <% if !@errors.nil? && !@errors.empty? %>
+        <% @errors.values.each do |message| %>
+          <div class="error">
+            <%= message %><br>
+        </div>
+      <% end %>
+      <% end %>
+
+
+
+    <br>
+    <%= f.submit "出金申請", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
+
+

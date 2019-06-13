@@ -1,58 +1,297 @@
-<div class="edit-row">
-<%= form_with(model: user, local: true) do |form| %>
-  <% if user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-12 no-gutters" style="font-size:0.8em;">
+<!--------------------- タブメニュー --------------------->
 
-      <ul>
-      <% user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<ul class="nav nav-tabs nav-fill"">
+    <li class="nav-item"><a class="nav-link active" href="#tab1" data-toggle="tab">プロフィール</a></li>
+    <li class="nav-item"><a class="nav-link" href="#tab2" data-toggle="tab">ログイン情報</a></li>
+    <li class="nav-item"><a class="nav-link" href="#tab3" data-toggle="tab">ポイント</a></li>
+</ul>
+<!--------------------- タブ（プロフ） --------------------->
+<div class="tab-content" style="padding:0px 5px;">
+    <div id="tab1" class="tab-pane active">
+            <%= form_with(model: @user, local: true)do |form| %>
+                <div class="field">
+                    <span class="badge badge-pill badge-primary required" style="margin-bottom:0.2em;">必須</span><%= form.label "アイコン" %>
+<!-- ここに戻す-->
+                        <%= form.file_field :image %>
+                        <% if @user.errors.messages[:image].present?  %>
+                            <div class="error">
+                                <% @user.errors.messages[:image].each do |message| %>
+                                    <%= message %>
+                                <% end %>
+                            </div>
+                    <% end %>
+                </div>
+                <!-- ニックネーム -->
+                <div class="field">
+                    <span class="badge badge-pill badge-primary required" style="margin-bottom:0.2em;">必須</span><%= form.label "ニックネーム" %><br>
+                    <%= form.text_field :name ,class: "form-control"%>
+                    <% if @user.errors.messages[:name].present?  %>
+                        <div class="error">
+                            <% @user.errors.messages[:name].each do |message| %>
+                                <%= message %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+                <!-- プロフィール -->
+                <div class="field">
+                    <%= form.label "プロフィール" %>
+                    <%= form.text_area :introduction,class: "form-control" ,rows:"6"%>
+                    <% if @user.errors.messages[:name].present?  %>
+                        <div class="error">
+                            <% @user.errors.messages[:name].each do |message| %>
+                                <%= message %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+                <!-- メール -->
+                <div class="field">
+                    <span class="badge badge-pill badge-primary required" style="margin-bottom:0.2em;">必須</span><%= form.label "email" %>
+                    <%= form.text_field :email,class: "form-control" %>
+                    <% if @user.errors.messages[:email].present?  %>
+                        <div class="error">
+                            <% @user.errors.messages[:email].each do |message| %>
+                                <%= message %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+                <!-- webサイト -->
+                <div class="field">
+                    <%= form.label "webサイト" %>
+                    <%= form.text_field :weblink ,class: "form-control"%>
+                    <% if @user.errors.messages[:weblink].present?  %>
+                        <div class="error">
+                            <% @user.errors.messages[:weblink].each do |message| %>
+                                <%= message %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+                <!-- お礼 -->
+                <div class="field">
+                    <%= form.label "お礼の画像" %>
+                    <%= form.file_field :thanksImage,class: "form-control" %>
+                    <% if @user.errors.messages[:thanksImage].present?  %>
+                        <div class="error">
+                            <% @user.errors.messages[:thanksImage].each do |message| %>
+                                <%= message %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+                <!-- ボタン -->
+                <div class="text-center" style="margin-bottom:2em; padding-top:20px;">
+                    <%= form.submit "保存する",class: "btn btn-submit btn-sm"%>
+                </div>
+            <% end %>
+    </div> <!-- tab1 -->
+    <!--------------------- タブ（ログイン情報） --------------------->
+    <div id="tab2" class="tab-pane">
+        <%= @user.email%>
+        <%= @user.password%>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login">
+            変更
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userDelete">
+            削除
+        </button>
+    </div><!-- tab-content -->
+<!--------------------- タブ（ポイント） --------------------->
+    <div id="tab3" class="tab-pane">
+			<%= @user.point %>
+				<button type="button" class="btn btn-primary">
+						<%= link_to "出金申請", new_withdrawal_path %>
+				</button>
+				<%= form_tag user_charge_path(user_id: current_user) do %>
+				<article>
+					<% if flash[:error].present? %>
+						<div id="error_explanation">
+							<p><%= flash[:error] %></p>
+						</div>
+					<% end %>
+					<label class="amount">
+						<span>Amount: $5.00</span>
+					</label>
+				</article>
+				<script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+				data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+				data-description="A month's subscription"
+				data-amount="500"
+				data-locale="auto">
+			</script>
+			<% end %>
+    </div><!-- tab-content -->
+</div><!-- col -->
+</div><!-- row(タブ) -->
 
-  <div class="field">
-    <%= form.label :ニックネーム %>
-    <%= form.text_field :name %>
-  </div>
 
-  <div class="field">
-    <%= form.label :プロフィール画像 %>
-    <%= form.file_field :image %>
-  </div>
 
-  <div class="field">
-    <%= form.label :プロフィール %>
-    <%= form.text_area :introduction %>
-  </div>
+<!-- モーダルの中身（profile） -->
+<div class="modal fade" id="profile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="padding: 0px 5px;">
+            <%= form_with(model: @user, local: true)do |form| %>
+                <div class="field">
+                    <span class="badge badge-pill badge-primary required" style="margin-bottom:0.2em;">必須</span><%= form.label "アイコン" %>
+                    <!-- ここに戻す-->
+                </div>
+                <!-- ニックネーム -->
+                <div class="field">
+                    <span class="badge badge-pill badge-primary required" style="margin-bottom:0.2em;">必須</span><%= form.label "ニックネーム" %><br>
+                    <%= form.text_field :name ,class: "form-control"%>
+                    <% if @user.errors.messages[:name].present?  %>
+                        <div class="error">
+                            <% @user.errors.messages[:name].each do |message| %>
+                                <%= message %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+                <!-- プロフィール -->
+                <div class="field">
+                    <%= form.label "プロフィール" %>
+                    <%= form.text_area :introduction,class: "form-control" ,rows:"6"%>
+                    <% if @user.errors.messages[:name].present?  %>
+                        <div class="error">
+                            <% @user.errors.messages[:name].each do |message| %>
+                                <%= message %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+                <!-- メール -->
+                <div class="field">
+                    <span class="badge badge-pill badge-primary required" style="margin-bottom:0.2em;">必須</span><%= form.label "email" %>
+                    <%= form.text_field :email,class: "form-control" %>
+                    <% if @user.errors.messages[:email].present?  %>
+                        <div class="error">
+                            <% @user.errors.messages[:email].each do |message| %>
+                                <%= message %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+                <!-- webサイト -->
+                <div class="field">
+                    <%= form.label "webサイト" %>
+                    <%= form.text_field :weblink ,class: "form-control"%>
+                    <% if @user.errors.messages[:weblink].present?  %>
+                        <div class="error">
+                            <% @user.errors.messages[:weblink].each do |message| %>
+                                <%= message %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+                <!-- お礼 -->
+                <div class="field">
+                    <%= form.label "お礼の画像" %>
+                    <%= form.file_field :thanksImage,class: "form-control" %>
+                    <% if @user.errors.messages[:thanksImage].present?  %>
+                        <div class="error">
+                            <% @user.errors.messages[:thanksImage].each do |message| %>
+                                <%= message %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+                <!-- ボタン -->
+                <div class="row text-center" style="padding-top:20px;">
+                    <div class="col-6">
+                        <div class="text-right" style="margin-bottom:2em;">
+                            <%= form.submit "保存する",class: "btn btn-submit btn-sm"%>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-left" style="margin-bottom:2em;" data-dismiss="modal" aria-label="閉じる">
+                            <p class="btn btn-submit btn-sm">キャンセル</p>
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
-  <div class="field">
-    <%= form.label :email %>
-    <%= form.text_field :email %>
-  </div>
 
-  <div class="field">
-    <%= form.label :password %>
-    <%= form.text_field :password %>
-  </div>
 
-  <div class="field">
-    <%= form.label :ポイント %>
 
-  </div>
 
-  <div class="field">
-    <%= form.label :URL %>
-    <%= form.text_field :weblink %>
-  </div>
+<!-- モーダルの中身（login） -->
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <%= form_with(model: @user, local: true)do |form| %>
+                <!-- メールアドレス -->
+                <div class="field">
+                    <span class="badge badge-pill badge-primary required" style="margin-bottom:0.2em;">必須</span><%= form.label "ニックネーム" %><br>
+                    <%= form.email_field :email, class: 'form-control',:placeholder=>"メールアドレス" %>
+                    <% if @user.errors.messages[:email].present?  %>
+                        <div class="error">
+                            <% @user.errors.messages[:email].each do |message| %>
+                                <%= message %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+                <!-- プロフィール -->
+                <div class="field">
+                    
+                    <%= form.password_field :password, class: 'form-control',:placeholder=>"パスワード" %><br>
+                    <%= form.password_field :password_confirmation, class: 'form-control',:placeholder=>"パスワード確認" %><br>
+                    <% if @user.errors.messages[:password].present?  %>
+                        <div class="error">
+                            <% @user.errors.messages[:password].each do |message| %>
+                                <%= message %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+                <!-- ボタン -->
+                <div class="field"¥>
+                    <div class="text-center" style="margin-bottom:2em;">
+                        <%= form.submit "保存する",class: "btn btn-submit"%>
+                    </div>
+                </div>
+            <% end %>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
-  <div class="field">
-    <%= form.label :お礼の画像 %>
-    <%= form.file_field :thaksImage %>
-  </div>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+
+
+<!-- 削除（userDelete） -->
+<div class="modal fade" id="userDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <!-- メールアドレス -->
+            <div class="field">
+            投稿した旅行記やコメントは全て削除されます。
+            本当によろしいですか？
+            <div class="btn btn-submit"><%= link_to "アカウント削除", user, method: :delete%></div>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+
+                <!--    <div class="text-center" id="img_field" onClick="$('#file').click()">--><!-- id "file"で、fileとdivを紐付けクリック時に連動 -->      
+                        <%# if @user.image.url.present? %>
+                            <%#= image_tag(@user.image.url,:width=>"600px",:class=>"icon_up") %><!-- 画像があるときは画像を表示する -->
+                        <%# else %>
+                            <!-- <i class="fas fa-image"></i><i class="fas fa-file-upload add"></i> -->
+                        <%# end %>
+                   <!-- </div> -->
+                        <%#= form.file_field :image, class: "image", style: "display:none;", id: "file"%><!-- id "file"をつけ、「display:none;」で隠す -->

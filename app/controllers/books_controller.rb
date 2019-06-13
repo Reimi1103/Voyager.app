@@ -1,13 +1,18 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy]
-  #before_action :duplicate_ban, only: [:new, :create]
+  #ログインユーザーが進行中のブックを持っているか確認する
+  before_action :duplicate_ban, only: [:new, :create]
+  #current_userが作者かどうか判定する
   before_action :correct_user,   only: [:edit, :update, :destroy]
 
+  
 
+  
   # GET /books
   # GET /books.json
   def index
     @books = Book.all
+    @nav_flag = "on"
   end
 
   # GET /books/1
@@ -16,13 +21,11 @@ class BooksController < ApplicationController
     @book = Book.find_by(id: params[:id])
     @user = User.find_by(id: @book.user_id)
     @nice = Nice.new
-
-    #@Comments = Comment.find_by(id: @user.post_id)
-
   end
 
   # GET /books/new
   def new
+    
     @book = Book.new
   end
 
@@ -36,10 +39,16 @@ class BooksController < ApplicationController
   def create
     @book = current_user.books.new(book_params)
     @book.progress = false
-    tags = params[:bookHashTag][:tag].split
+    tags = params[:bookHashTag][:tag] +" "+ params[:bookHashTag][:subject]
+    tagsSplit = []
+    if tags.present?
+    tagsDelete = tags.delete("#")
+    tagsDelete = tagsDelete.delete("＃")
+    tagsSplit = tagsDelete.split(/[,|.|\s|　]/)
+    end
     if @book.save
-      tags.each do |tag|
-        @bookHashTag = BookHashTag.new(tag: tag,book_id: @book.id)
+        tagsSplit.each do |tag|
+        @bookHashTag = BookHashTag.new(tag: "#"+tag,book_id: @book.id)
         @bookHashTag.save
       end
       redirect_to book_path(@book.id)
@@ -47,6 +56,8 @@ class BooksController < ApplicationController
       render :new
     end
   end
+
+
 
   # PATCH/PUT /books/1
   # PATCH/PUT /books/1.json
@@ -58,8 +69,8 @@ class BooksController < ApplicationController
         prog =false
       end
       @book.progress = prog
+
       if @book.update_attributes(book_params)
-      # if @book.save
         format.html { redirect_to @book, notice: 'Book was successfully updated.' }
         format.json { render :show, status: :ok, location: @book }
       else
@@ -68,6 +79,9 @@ class BooksController < ApplicationController
       end
     end
   end
+
+
+  
 
   # DELETE /books/1
   # DELETE /books/1.json
@@ -91,7 +105,7 @@ class BooksController < ApplicationController
     end
 
     def bookHashTag_params
-      params.require(:postHashTag).permit(:tag)
+      params.require(:bookHashTag).permit(:tag)
     end
 
 
@@ -103,7 +117,10 @@ class BooksController < ApplicationController
     end
 
     def correct_user
-      @user = User.find(params[:id])
+      @book = Book.find(params[:id])
+      @user = User.find_by(id: @book.user_id)
       redirect_to(root_url) unless @user == current_user
     end
+
+
 end

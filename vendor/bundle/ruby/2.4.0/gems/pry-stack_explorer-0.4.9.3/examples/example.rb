@@ -30,10 +30,9 @@ end
 def gamma
   zeta
 end
-
+w
 def zeta
   vitamin = 100
-  binding.pry
 end
 #
 

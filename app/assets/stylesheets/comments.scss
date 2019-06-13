@@ -1,3 +1,424 @@
 // Place all the styles related to the comments controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.border03 {
+    height: 1px;
+    background-image: linear-gradient(90deg, transparent, transparent 50%, #fff 50%, #fff 100%), linear-gradient(90deg, #f085a7, #5fc3e4);
+    background-size: 10px 1px, 100% 1px;
+    border: none;
+}
+
+.a {
+color: #5db3ece8;
+}
+.s1 {
+	color: #444;
+	font-size: 1em;
+	display: flex;
+	align-items: center;
+}
+.s1:before, .s1:after {
+	content: "";
+	flex-grow: 1;
+	height: 1px;
+    background-image: linear-gradient(90deg, transparent, transparent 50%, #fff 50%, #fff 100%), linear-gradient(90deg, #f085a7, #5fc3e4);
+    background-size: 10px 1px, 100% 1px;
+    border: none;
+	display: block;
+}
+.s1:before {
+	margin-right: .4em;
+}
+.s1:after {
+	margin-left: .4em;
+}
+
+
+
+
+
+
+
+
+
+
+.balloon1_right {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 15px 1.5em 0;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #b9e222;
+    border-radius: 15px;
+}
+
+.balloon1_right:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-top: -10px;
+    margin-left: -4px;
+    border: 10px solid transparent;
+    border-left: 15px solid #b9e222;
+}
+
+.balloon1_right p {
+    margin: 0;
+    padding: 0;
+}
+
+/*-------------------ポイント　0 --------------------*/
+.balloon1_left_ {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #e9dbd9;
+    border-radius: 15px;
+}
+
+.balloon1_left_:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -24px;
+    margin-top: -10px;
+    margin-left: 3px;
+    border: 10px solid transparent;
+    border-right: 15px solid #e9dbd9;
+}
+
+.balloon1_left_ p {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+/*-------------------ポイント　100  --------------------*/
+.balloon1_left_100 {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #9bcc98;
+    border-radius: 15px;
+}
+
+.balloon1_left_100:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -24px;
+    margin-top: -10px;
+    margin-left: 3px;
+    border: 10px solid transparent;
+    border-right: 15px solid #9bcc98;
+}
+
+.balloon1_left_100 p {
+    margin: 0;
+    padding: 0;
+}
+
+
+/*-------------------ポイント　200  --------------------*/
+.balloon1_left_200 {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #9bcc98;
+    border-radius: 15px;
+}
+
+.balloon1_left_200:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -24px;
+    margin-top: -10px;
+    margin-left: 3px;
+    border: 10px solid transparent;
+    border-right: 15px solid #9bcc98;
+}
+
+.balloon1_left_200 p {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+/*-------------------ポイント　300  --------------------*/
+.balloon1_left_300 {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #e5a9c9;
+    border-radius: 15px;
+}
+
+.balloon1_left_300:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -24px;
+    margin-top: -10px;
+    margin-left: 3px;
+    border: 10px solid transparent;
+    border-right: 15px solid #e5a9c9;
+}
+
+.balloon1_left_300 p {
+    margin: 0;
+    padding: 0;
+}
+
+
+/*-------------------ポイント　400  --------------------*/
+.balloon1_left_400 {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #e5a9c9;
+    border-radius: 15px;
+}
+
+.balloon1_left_400:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -24px;
+    margin-top: -10px;
+    margin-left: 3px;
+    border: 10px solid transparent;
+    border-right: 15px solid #e5a9c9;
+}
+
+.balloon1_left_400 p {
+    margin: 0;
+    padding: 0;
+}
+
+
+/*-------------------ポイント　500  --------------------*/
+.balloon1_left_500 {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #ecdd43;
+    border-radius: 15px;
+}
+
+.balloon1_left_500:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -24px;
+    margin-top: -10px;
+    margin-left: 3px;
+    border: 10px solid transparent;
+    border-right: 15px solid #ecdd43;
+}
+
+.balloon1_left_500 p {
+    margin: 0;
+    padding: 0;
+}
+
+
+/*-------------------ポイント　600  --------------------*/
+.balloon1_left_600 {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #ecdd43;
+    border-radius: 15px;
+}
+
+.balloon1_left_600:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -24px;
+    margin-top: -10px;
+    margin-left: 3px;
+    border: 10px solid transparent;
+    border-right: 15px solid #ecdd43;
+}
+
+.balloon1_left_600 p {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+
+/*-------------------ポイント　700  --------------------*/
+.balloon1_left_700 {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #2567b3;
+    border-radius: 15px;
+}
+
+.balloon1_left_700:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -24px;
+    margin-top: -10px;
+    margin-left: 3px;
+    border: 10px solid transparent;
+    border-right: 15px solid #2567b3;
+}
+
+.balloon1_left_700 p {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+
+/*-------------------ポイント　800  --------------------*/
+.balloon1_left_800 {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #2567b3;
+    border-radius: 15px;
+}
+
+.balloon1_left_800:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -24px;
+    margin-top: -10px;
+    margin-left: 3px;
+    border: 10px solid transparent;
+    border-right: 15px solid #2567b3;
+}
+
+.balloon1_left_800 p {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+/*-------------------ポイント　900  --------------------*/
+.balloon1_left_900 {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #2567b3;
+    border-radius: 15px;
+}
+
+.balloon1_left_900:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -24px;
+    margin-top: -10px;
+    margin-left: 3px;
+    border: 10px solid transparent;
+    border-right: 15px solid #2567b3;
+}
+
+.balloon1_left_900 p {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+/*-------------------ポイント　1000  --------------------*/
+
+.balloon1_left_1000 {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #ff5647;
+    border-radius: 15px;
+}
+
+.balloon1_left_1000:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -24px;
+    margin-top: -10px;
+    margin-left: 3px;
+    border: 10px solid transparent;
+    border-right: 15px solid #ff5647;
+}
+
+.balloon1_left_1000 p {
+    margin: 0;
+    padding: 0;
+}
+
+

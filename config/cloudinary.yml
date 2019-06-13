@@ -1,0 +1,19 @@
+---
+development:
+  cloud_name: voyagertriptrip
+  api_key: '355473376155785'
+  api_secret: lcWKK8oZmKwISFd0mhjlDNVd66E
+  enhance_image_tag: true
+  static_file_support: false
+production:
+  cloud_name: voyagertriptrip
+  api_key: '355473376155785'
+  api_secret: lcWKK8oZmKwISFd0mhjlDNVd66E
+  enhance_image_tag: true
+  static_file_support: true
+test:
+  cloud_name: voyagertriptrip
+  api_key: '355473376155785'
+  api_secret: lcWKK8oZmKwISFd0mhjlDNVd66E
+  enhance_image_tag: true
+  static_file_support: false

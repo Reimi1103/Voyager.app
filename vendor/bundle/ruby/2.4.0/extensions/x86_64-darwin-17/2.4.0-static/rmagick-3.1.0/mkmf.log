@@ -1,0 +1,72 @@
+find_executable: checking for brew... -------------------- yes
+
+--------------------
+
+find_executable: checking for clang... -------------------- yes
+
+--------------------
+
+find_executable: checking for pkg-config... -------------------- yes
+
+--------------------
+
+
+Warning: Found more than one ImageMagick installation. This could cause problems at runtime.
+ - ImageMagick
+ - ImageMagick
+ - ImageMagick
+ - ImageMagick
+ - ImageMagick
+ - ImageMagick
+ - ImageMagick
+ - ImageMagick
+
+configure_compile_options: checking for outdated ImageMagick version (<= 6.7.7)... -------------------- no
+
+Detected ImageMagick version: 7.0.8
+--------------------
+
+assert_minimum_ruby_version!: checking for Ruby version >= 2.3.0... -------------------- yes
+
+--------------------
+
+have_header: checking for sys/types.h... -------------------- yes
+
+"clang -o conftest -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/x86_64-darwin17 -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/ruby/backward -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0 -I.  -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/Cellar/imagemagick/7.0.8-11_2/include/ImageMagick-7  -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/Cellar/imagemagick/7.0.8-11_2/include/ImageMagick-7 conftest.c  -L. -L/Users/reimi/.rbenv/versions/2.4.1/lib  -L/usr/local/Cellar/imagemagick/7.0.8-11_2/lib -lMagickCore-7.Q16HDRI    -L/usr/local/Cellar/imagemagick/7.0.8-11_2/lib -lMagickCore-7.Q16HDRI  -lruby-static -framework CoreFoundation  -lpthread -ldl -lobjc "
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main(int argc, char **argv)
+4: {
+5:   return 0;
+6: }
+/* end */
+
+"clang -E -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/x86_64-darwin17 -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/ruby/backward -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0 -I.  -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/Cellar/imagemagick/7.0.8-11_2/include/ImageMagick-7  -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/Cellar/imagemagick/7.0.8-11_2/include/ImageMagick-7  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <sys/types.h>
+/* end */
+
+--------------------
+
+have_header: checking for magick/MagickCore.h... -------------------- no
+
+"clang -E -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/x86_64-darwin17 -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0/ruby/backward -I/Users/reimi/.rbenv/versions/2.4.1/include/ruby-2.4.0 -I.  -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/Cellar/imagemagick/7.0.8-11_2/include/ImageMagick-7  -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/local/Cellar/imagemagick/7.0.8-11_2/include/ImageMagick-7  conftest.c -o conftest.i"
+conftest.c:3:10: fatal error: 'magick/MagickCore.h' file not found
+#include <magick/MagickCore.h>
+         ^~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <magick/MagickCore.h>
+/* end */
+
+--------------------
+
+ERROR: Can't install RMagick 3.1.0. Can't find magick/MagickCore.h.

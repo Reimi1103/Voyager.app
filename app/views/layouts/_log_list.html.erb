@@ -1,0 +1,28 @@
+<div class="card">
+  <div class="row no-gutters">
+    <div class="card-body">
+      <%= log_list.user.name %>
+    </div>
+  </div>
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <div class="showtrim"><%= image_tag log_list.bookCover.url,style: "width:100%;" unless log_list.bookCover.blank? %></div>
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <strong><%= log_list.title.truncate(50) %></strong><br>
+        <div style="font-size:0.8em">
+          <%= log_list.prologue.truncate(100)%>
+          <div class="row"><!-- いいねとコメント数 -->
+            <div class="col-3">
+              total ❤️<%= log_list.total_nice_count %>
+            </div>
+            <div class="col-3">
+              total コメント数<%= log_list.total_comment_count %>
+            </div>
+          </div>
+        </div><!--row いいねとコメント数 -->
+      </div>
+    </div>
+  </div>
+</div><!--card -->

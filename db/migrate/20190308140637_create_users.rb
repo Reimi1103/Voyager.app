@@ -6,9 +6,9 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string :introduction
       t.string :email
       t.string :password_digest
-      t.integer :points
+      t.integer :point, default: 1000
       t.string :weblink
-      t.string :thaksImage
+      t.string :thanksImage
 
       t.timestamps
     end

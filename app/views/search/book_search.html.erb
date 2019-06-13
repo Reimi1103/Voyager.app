@@ -1,0 +1,25 @@
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrxk4mWzR5KuFY6-X95rlEAnT1YhoJq5E&callback" async defer></script>
+<div class="container">
+	<div class="row">
+		<div class="card-columns">
+			<!------------------------------------ カード　------------------------------------>
+			<% @books.each do |book| %><!-- 繰り返し -->
+				<div class="card" style="width: 18rem;">
+					<div class="card-body">
+						<%= book.user.name %>
+					</div>
+					<div class="showtrim">
+            <%= image_tag book.bookCover.url %>
+          </div>
+					<div class="card-body">
+						<%= book.title.truncate(50) %>
+						<%= book.prologue %>
+						<%= book.progress %>
+						<%= book.schedule %>
+					</div>
+				</div>
+			<% end %>
+		<!------------------------------------ カード　------------------------------------>
+		</div>
+	</div>
+</div>

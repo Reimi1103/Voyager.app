@@ -1,86 +1,133 @@
-<h1>Editing Post</h1>
-
-<%= form_for @post,url: book_post_path(@post.id) do |form| %>
+<div class="col-8  mx-auto">
+<%= form_for @post,url: book_post_path(@book,@post) do |form| %>
   <% if @post.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
-
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
       <ul>
-      <% @post.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
-
   <div class="field">
     <%= form.label :text %>
     <%= form.text_area :text,class: "form-control" %>
   </div>
-
   <div class="field">
     <%= form.label :image1 %>
     <%= form.file_field :image1 %>
   </div>
-
   <div class="field">
     <%= form.label :image2 %>
     <%= form.file_field :image2 %>
   </div>
-
   <div class="field">
     <%= form.label :image3 %>
     <%= form.file_field :image3 %>
   </div>
-
+  <%= hidden_field_tag "post[id]",id: :id %>
   <%= hidden_field_tag "post[latitude]","",id: "map_latitude" %>
   <%= hidden_field_tag "post[longitude]","",id: "map_longitude" %>
-  <div id="map"></div>
-    <style type="text/css">
-      #map {
-        height:400px;
-      }
-    </style>
-    <script type="text/javascript">
-      var latitude = 35.679
-      var longitude = 139.732
-
-      $('#map_latitude').val(latitude);
-      $('#map_longitude').val(longitude);
-          L.Icon.Default.imagePath = "/assets";
-          var map = L.map('map').setView([latitude, longitude],17);
-          var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-          var osmAttrib = "Map data OpenstreetMap contributors";
-          L.tileLayer(osmUrl,{
-            attribution: osmAttrib,
-            maxZoom: 20,
-          }).addTo(map);
-
-          var marker = L.marker([latitude, longitude]).addTo(map);
-
-          map.on("click",function(e){
-            marker.setLatLng(e.latlng);
-            $('#map_latitude').val(e.latlng.lat);
-            $('#map_longitude').val(e.latlng.lng);
-          });
-
-    </script>
-
-  <!-- <div class="field">
-    <#%= form.label :longitude %>
-    <#%= form.number_field :longitude,class: "form-control"  %>
-  </div>
-
-  <div class="field">
-    <#%= form.label :latitude %>
-    <#%= form.number_field :latitude,class: "form-control"  %>
-  </div> -->
-
+<% @post.post_hash_tags.each_with_index do |hash_tag,i| %>
+    <label>ハッシュタグ</label>
+    <%= text_field_tag "hash_tag[tag_#{i}]",hash_tag.tag,class: "form-control" %>
+    <%= hidden_field_tag "hash_tag[id_#{i}]", hash_tag.id %>
+  <% end %>
   <div class="actions">
     <%= form.submit "ポストの作成",class: "btn btn-success" %>
   </div>
 <% end %>
 
 
-<%#= link_to 'Show', @post %> |
-<%#= link_to 'Back', posts_path %>
+<h2>位置情報を追加する</h2>
+<p>
+  <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">位置情報を追加</a>
+</p>
+<div class="row">
+  <div class="col">
+    <div class="collapse multi-collapse" id="multiCollapseExample1">
+      <div class="card card-body">
+        <!-- google map -->
+        <input type="text" id="map_search_input" class="form-cotrol" style="border:1px solid gray;">
+        <button id="map_search_button" class="btn btn-info">検索</button>
+        <button id="map_cancel_button" class="btn btn-info">キャンセル</button>
+        
+        <div id="map"></div>
+
+        <style>
+        #map{
+          height: 400px;
+        }
+        </style>
+
+        <script>
+        $(function(){
+            initMap();
+          function initMap(){
+            mapInstance = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: <%= @post.latitude.to_f %>, lng: <%= @post.longitude.to_f %>},
+            zoom: 14,
+            });
+            
+              var marker = new google.maps.Marker({
+              position: {lat: <%= @post.latitude.to_f %>, lng: <%= @post.longitude.to_f %>},
+              map: mapInstance,
+            });
+          }
+
+                 //mapをクリックしたときのイベントを設定
+       google.maps.event.addListener(map, 'click', mylistener);
+
+       //クリックしたときの処理
+       function mylistener(event){
+              //marker作成
+              var marker = new google.maps.Marker();
+              //markerの位置を設定
+              //event.latLng.lat()でクリックしたところの緯度を取得
+              marker.setPosition(new google.maps.LatLng(event.latLng.lat(), event.latLng.lng()));
+              //marker設置
+              marker.setMap(map);
+       }
+
+          $("#map_search_button").click(function(){
+            var geocoder = new google.maps.Geocoder();
+            map_text = $("#map_search_input").val();  
+            var map = new google.maps.Map(document.getElementById("map"),{
+            center: {lat: <%= @post.latitude.to_f %>, lng: <%= @post.longitude.to_f %>},
+            zoom: 8
+            });
+            geocoder.geocode( { 'address': map_text}, function(results, status) {
+                  
+                // ジオコーディングが成功した場合
+                if (status == google.maps.GeocoderStatus.OK) {
+                    
+                  // 変換した緯度・経度情報を地図の中心に表示
+                  map.setCenter(results[0].geometry.location);
+                    
+                  //☆表示している地図上の緯度経度
+                  document.getElementById('map_latitude').value=results[0].geometry.location.lat();
+                  document.getElementById('map_longitude').value=results[0].geometry.location.lng();
+                    
+                  // マーカー設定
+                  marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                  });
+                  console.log(status);
+                // ジオコーディングが成功しなかった場合
+                } else {
+                  console.log('Geocode was not successful for the following reason: ' + status);
+                }
+              });
+          });
+        });
+
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrxk4mWzR5KuFY6-X95rlEAnT1YhoJq5E&callback" async defer></script>
+        <!-- google map -->
+</div>
+      </div>
+    </div>
+  </div>
+</div>

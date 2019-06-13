@@ -7,7 +7,8 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
   has_secure_password
-  validates :password, presence: true, length: { minimum: 6 }
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+
 
 
   def self.digest(string)
@@ -34,30 +35,35 @@ class User < ApplicationRecord
 
   def forget
     update_attribute(:remember_digest, nil)
+    
   end
 
 
 
-  has_many :posts#
-  has_many :books#
-  has_many :favorites#
-  has_many :comments#
-  has_many :relationships#
+  has_many :posts,dependent: :destroy
+  has_many :books,dependent: :destroy
+  has_many :favorites,dependent: :destroy
+  
+  has_many :favorite_books,through: :favorites,source: "book"
+
+  has_many :comments,dependent: :destroy
+  has_many :relationships
   has_many :nices, dependent: :destroy
   has_many :nice_posts, through: :nices, source: :post
-  has_many :points#
-  has_many :withdrawals#
-  has_one :bank_accounts#
+  has_many :points,dependent: :destroy
+  has_many :withdrawals
+  has_one :bank_accounts
 
-  mount_uploader :image, ImagesUploader
-  mount_uploader :thaksImage, ImagesUploader
+  #mount_uploader :image, ImagesUploader
+  mount_uploader :thanksImage, ImagesUploader
+  mount_uploader :image, CloudinaryImageUploader
 
   has_many :active_relationships,  class_name:  "Relationship",
-                                   foreign_key: "follower_id",
-                                   dependent:   :destroy
-  has_many :passive_relationships, class_name:  "Relationship",
-                                   foreign_key: "followed_id",
-                                   dependent:   :destroy
+                                  foreign_key: "follower_id",
+                                  dependent:   :destroy
+has_many :passive_relationships, class_name:  "Relationship",
+                                  foreign_key: "followed_id",
+                                  dependent:   :destroy
   has_many :following, through: :active_relationships,  source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
 

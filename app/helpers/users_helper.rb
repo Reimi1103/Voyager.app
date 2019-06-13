@@ -21,6 +21,13 @@ module UsersHelper
 
   def current_user?(user)
     user == current_user
- end
+  end
+
+  def active_book(current_user)
+    current_user.books.where(progress: true)
+
+  end
+
+      
 
 end

@@ -1,0 +1,91 @@
+<div class="card shadow" style="margin:10px 2px; font-size:1em; max-width:400px;">
+  <div class="card-body no-gutters" style="padding:5px;">
+    <%= link_to book_path(post.book.id) do %><%= post.book.title %><%end%>
+  </div>
+      <hr style="margin:0px;">
+  <div class="card-header bg-white no-gutters" style="border:none; padding:5px;">
+    <div class="row mx-auto d-flex align-items-center">
+      <div class="col-2 no-gutters">
+        <%= image_tag(post.user.image.url,width:"10px;",:class => "list_icon") %>
+      </div>
+      <div class="col-6 no-gutters" style="font-size:0.8em;">
+        <%= post.user.name %>
+      </div>
+      <div class="col-3  no-gutters text-right" style="font-size:0.8em;">
+        <a href="/books/<%= post.book_id %>/posts/<%= post.id %>"><%= time_ago_in_words(post.created_at)%>前</a>
+      </div>
+    </div>
+  </div>
+  <div class="card-body no-gutters"> 
+    <div class="post_slick">
+      <%= image_tag(post.image1.url,class:"w-100") unless post.image1.blank? %>
+      <%= image_tag(post.image2.url,class:"w-100") unless post.image2.blank? %>
+      <%= image_tag(post.image3.url,class:"w-100") unless post.image3.blank? %>
+    </div>
+    
+  </div>
+  <div class="card-body no-gutters">
+    <% if post.longitude.present? %><!-- mapの登録があれば -->
+      <div id="map_<%= post.book_id %>_<%= post.id %>"></div>
+      <style>
+        /* #map_<%= post.book_id %>_<%= post.id %> {
+          height: 150px;
+          width:100%;
+        } */
+      </style>
+      <script>
+        // $(function(){
+        //   initMap_<%= post.book_id %>_<%= post.id %>();
+        //   function initMap_<%= post.book_id %>_<%= post.id %>(){
+        //     mapdisplay_<%= post.book_id %>_<%= post.id %>();
+        //   }
+        //   function mapdisplay_<%= post.book_id %>_<%= post.id %>(){
+        //     var latitude_<%= post.book_id %>_<%= post.id %> = <%= post.latitude.to_f %>;
+        //     var longitude_<%= post.book_id %>_<%= post.id %> = <%= post.longitude.to_f %>;
+        //     var latlng_<%= post.book_id %>_<%= post.id %> = {lat: latitude_<%= post.book_id %>_<%= post.id %>, lng: longitude_<%= post.book_id %>_<%= post.id %>};
+        //     var map_<%= post.book_id %>_<%= post.id %> = new google.maps.Map(document.getElementById("map_<%= post.book_id %>_<%= post.id %>"),{
+        //       center: latlng_<%= post.book_id %>_<%= post.id %>,
+        //       zoom: 7,
+        //       controlSize: 20
+        //     });
+        //     var marker = new google.maps.Marker({
+        //       position: latlng_<%= post.book_id %>_<%= post.id %>,
+        //       map: map_<%= post.book_id %>_<%= post.id %>,
+        //     })
+        //     console.table(latlng_<%= post.book_id %>_<%= post.id %>);
+        //   };
+        // });
+      </script>
+    <% end %><!-- mapここまで -->
+  </div>
+  <a style="padding:0px;" href="/books/<%= post.book_id %>/posts/<%= post.id %>">
+    <div style="padding:5px;" class="text_overflow">
+      <%=  post.text %><!-- 本文 -->
+    </div>
+  </a>
+  <div class="card-body no-gutters"style="padding-left:5px;">
+      <% post.post_hash_tags.each do |tag| %><!-- ハッシュタグ -->
+        <%= link_to post_search_path(search: tag.tag),style:"padding-left:5px;color:#4c7bc4" do %>
+        #<%= tag.tag %>
+        <% end %>
+      <% end %>
+  </div>
+  <div class="row" style="width:100%;">
+    <!-- いいね&コメントカウント -->
+    <div class="col-7 ">
+      <% if logged_in? %>
+        <li class="nice_<%= post.id %>">
+          <% unless post.nicing_users.include?(current_user) %>
+            <%= render "/nices/heart",post: post %><i class="far fa-comment" style="padding-left:20px;">10</i>
+          <% else %>
+            <%= render "/nices/heart_favo",post: post %><i class="far fa-comment" style="padding-left:20px;">10</i>
+          <% end %>
+        </li>
+      <% end %>
+    </div>
+    <!-- viewカウント　-->
+    <div class="col-5">
+      <i class="fas fa-eye" style="padding-left:55px;"></i>100
+    </div>
+  </div>
+</div>

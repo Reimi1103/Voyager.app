@@ -1,42 +1,86 @@
-<%= form_with(model: book, local: true) do |form| %>
-  <% if book.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(book.errors.count, "error") %> prohibited this book from being saved:</h2>
-
-      <ul>
-      <% book.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label "本のタイトル" %>
-    <%= form.text_field :title,class: "form-control"  %>
+<div class="container">
+  <div class="row">
+    <div class="col-8 no-gutters mx-auto" style="font-size:0.8em;">
+      <div class="card shadow-sm">
+      <div class="container text-center" style="padding-top:10px;">
+        <%= form_with(model: @book, local: true)do |form| %>
+          <h5>新しい旅行記の作成</h5>
+          <% if @book.errors.any?  %>
+            <div class="error">入力エラーがあります。</div>
+          <% end %>
+          <!-- 表紙 -->
+          <div class="text-left" style="padding-top:10px;">
+            <div class="field">
+              <span class="badge badge-pill badge-primary required" style="margin-bottom:0.2em;">必須</span><%= form.label "表紙の画像" %>
+              <div  id="img_field" onClick="$('#file').click()" class="text-center"><!-- id "file"で、fileとdivを紐付けクリック時に連動 -->    
+                <% if @book.bookCover.url.present? %>
+                  <div class="showtrim"><%= image_tag(@book.bookCover.url,:width=>"100%") %></div><!-- 画像があるときは画像を表示する -->
+                <% else %>
+                  <i class="fas fa-image mx-auto"></i><i class="fas fa-file-upload add"></i>
+                <% end %>
+              </div>
+              <%= form.file_field :bookCover, class: "image mx-auto", style: "display:none;", id: "file"%><!-- id "file"をつけ、「display:none;」で隠す -->
+            </div>
+            <% if @book.errors.messages[:bookCover].present?  %>
+              <div class="error">
+                <% @book.errors.messages[:bookCover].each do |message| %>
+                  <%= message %>
+                <% end %>
+              </div>
+            <% end %>
+            <!-- タイトル -->
+            <div class="field">
+              <span class="badge badge-pill badge-primary required" style="margin-bottom:0.2em;">必須</span><%= form.label "本のタイトル" %>
+              <%= form.text_field :title,class: "form-control ",:placeholder => "例）おひとり様ハワイ" %>
+              <% if @book.errors.messages[:title].present?  %>
+                <div class="error">
+                  <% @book.errors.messages[:title].each do |message| %>
+                    <%= message %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+            <!-- プロローグ -->
+            <div class="field">
+              <span class="badge badge-pill badge-primary required" style="margin-bottom:0.2em;">必須</span><%= form.label "プロローグ" %><div class="text-right text-light"><span class="show-count">0</span>文字</div>
+              <%= form.text_area :prologue, id:"js-count", class: "form-control",:rows=>"5",:placeholder => "例）初めての一人旅の記録です！(10~180文字)" %>
+              <% if @book.errors.messages[:prologue].present?  %>
+                <div class="error">
+                  <% @book.errors.messages[:prologue].each do |message| %>
+                    <%= message %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+            <!-- スケジュール -->
+            <div class="field">
+              <span class="badge badge-pill badge-primary required">必須</span><%= form.label "スケジュール" %>
+              <%= form.text_field :schedule,class: "form-control",:placeholder => "例）2019年４月28日〜5月2日"  %>
+              <% if @book.errors.messages[:schedule].present? %>
+                <div class="error">
+                  <% @book.errors.messages[:schedule].each do |message| %>
+                    <%= message %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+            <!-- ハッシュタグ -->
+            <div class="field">
+              <%= fields_for :bookHashTag do |b| %>
+                <%= b.label :ハッシュタグ%>
+                <%= b.select :subject, [["#日本", "日本"], ["#アジア", "アジア"], ["#ハワイ", "ハワイ"], ["#ヨーロッパ", "ヨーロッパ"], ["#北米", "北米"], ["#中南米", "中南米"], ["#アフリカ", "アフリカ"]] ,class:"form-control" %>
+                <%= b.text_field :tag,class: "form-control",:placeholder => "例）#ハワイ #おひとり様 #リゾート" %>
+              <% end %>
+            </div>
+            <!-- submit -->
+            <div class="field">
+              <div class="text-center" style="margin-bottom:2em;">
+                <%= form.submit "ブックを作成する",class: "btn btn-submit" %>
+              </div>
+            </div>
+          </div><!-- text-left -->
+        <% end %>
+        </div>
+    </div> <!-- card -->
   </div>
-
-  <div class="field">
-    <%= form.label "プロローグ" %>
-    <%= form.text_field :prologue,class: "form-control"  %>
-  </div>
-
-  <div class="field">
-    <%= form.label "ブックカバー" %>
-    <%= form.file_field :bookCover,class: "form-control"  %>
-  </div>
-
-  <div class="field">
-    <%= form.label "スケジュール" %>
-    <%= form.text_field :schedule,class: "form-control"  %>
-  </div>
-
-  <%= fields_for :bookHashTag do |b| %>
-      <%= b.label :hashtag %>
-      <%= b.text_area :tag,class: "form-control" %>
- <% end %>
-
-  <div class="actions">
-    <%= form.submit "ブックを作成する",class: "btn btn-success" %>
-  </div>
-<% end %>
+</div>

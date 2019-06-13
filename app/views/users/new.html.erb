@@ -1,23 +1,33 @@
 <% provide(:title, '新規登録') %>
-<h1>新規登録</h1>
 
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <%= form_for(@user) do |f| %>
-
-      <%= f.label :ニックネーム %>
-      <%= f.text_field :name, class: 'form-control' %>
-
-      <%= f.label :メールアドレス %>
-      <%= f.email_field :email, class: 'form-control' %>
-
-      <%= f.label :パスワード %>
-      <%= f.password_field :password, class: 'form-control' %>
-
-      <%= f.label :password_confirmation, "パスワード確認" %>
-      <%= f.password_field :password_confirmation, class: 'form-control' %>
-
-      <%= f.submit "新規登録", class: "btn btn-primary" %>
-    <% end %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 mx-auto">
+      <center><%= image_tag 'voyager_logo.png',style:"width:180px;"%></center>
+    </div>
+    <div class="mx-auto">
+      <center>
+      <h6>旅先の出来事をシェアしてチップ獲得！<br>
+      ちょっぴり得する旅行記サイト</h6>
+      </center>
+    </div>
   </div>
 </div>
+
+<div class="col-md-5 mx-auto" style="padding-top:10px;">
+  <div class="card">
+    <div class="card-body">
+      <%= form_for(@user) do |f| %>
+        <%= f.text_field :name, class: 'form-control',:placeholder=>"ユーザーネーム"%><br>
+        <%= f.email_field :email, class: 'form-control',:placeholder=>"メールアドレス" %><br>
+        <%= f.password_field :password, class: 'form-control',:placeholder=>"パスワード" %><br>
+        <%= f.password_field :password_confirmation, class: 'form-control',:placeholder=>"パスワード確認" %><br>
+        <center>
+        <%= f.submit "登録", class: "btn btn-primary w-100" %>
+        </center>
+      <% end %>
+    </div>
+  </div>
+  <p class="text-right">すでにアカウントをお持ちの方はこちら</p>
+</div>
+

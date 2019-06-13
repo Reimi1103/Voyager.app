@@ -1,53 +1,90 @@
+<div class="container">
+<div class="row">
+<div class="col-md-7 mx-auto ">
 <%= form_with(model: bank_account, local: true) do |form| %>
-  <% if bank_account.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(bank_account.errors.count, "error") %> prohibited this bank_account from being saved:</h2>
 
-      <ul>
-      <% bank_account.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<% if @bank_account.errors.any?  %>
+<div class="error">
+入力エラーがあります。
+</div>
+<% end %>
+<br>
+<br>
+<div class="field">
+<%= form.label :銀行名 %>
+<%= form.text_field :bank_name,class:"form-control" ,:placeholder => "山田 太郎"%>
+<% if @bank_account.errors.full_messages_for(:bank_name).present?  %>
 
-  <div class="field">
-    <%= form.label :bank_name %>
-    <%= form.text_field :bank_name,class:"form-control" %>
-  </div>
+<div class="error">
+<% @bank_account.errors.full_messages_for(:bank_name).each do |message| %>
+<p><%= message %></p>
+<% end %>
+</div>
+<% end %>
+</div>
 
-  <div class="field">
-    <%= form.label :bank_code %>
-    <%= form.number_field :bank_code,class:"form-control"  %>
-  </div>
+<div class="field">
+<%= form.label :銀行コード %>
+<%= form.number_field :bank_code,class:"form-control"  %>
+<% if @bank_account.errors.any? && @bank_account.errors.messages.key?(:bank_code) %>
+<div class="error">
+<%= @bank_account.errors.messages[:bank_code] %>
+</div>
+<% end %>
+</div>
 
-  <div class="field">
-    <%= form.label :branch_name %>
-    <%= form.text_field :branch_name ,class:"form-control" %>
-  </div>
+<div class="field">
+<%= form.label :支店名 %>
+<%= form.text_field :branch_name ,class:"form-control" %>
+<% if @bank_account.errors.any? && @bank_account.errors.messages.key?(:branch_name) %>
+<div class="error">
+<%= @bank_account.errors.messages[:branch_name] %>
+</div>
+<% end %>
+</div>
 
-  <div class="field">
-    <%= form.label :branch_code %>
-    <%= form.number_field :branch_code,class:"form-control"  %>
-  </div>
+<div class="field">
+<%= form.label :支店コード %>
+<%= form.number_field :branch_code,class:"form-control"  %>
+<% if @bank_account.errors.any? && @bank_account.errors.messages.key?(:branch_code) %>
+<div class="error">
+<%= @bank_account.errors.messages[:branch_code] %>
+</div>
+<% end %>
+</div>
 
-  <div class="field">
-    <%= form.label :bank_type %>
-    <%= form.number_field :bank_type ,class:"form-control" %>
-  </div>
+<div class="field">
+<%= form.label :口座種別 %>
+<%= form.number_field :bank_type ,class:"form-control" %>
+<% if @bank_account.errors.any? && @bank_account.errors.messages.key?(:bank_type) %>
+<div class="error">
+<%= @bank_account.errors.messages[:bank_type] %>
+</div>
+<% end %>
+</div>
 
-  <div class="field">
-    <%= form.label :bank_holder %>
-    <%= form.text_field :bank_holder ,class:"form-control" %>
-  </div>
+<div class="field">
+<%= form.label :口座名義 %>
+<%= form.text_field :bank_holder ,class:"form-control" %>
+<% if @bank_account.errors.any? && @bank_account.errors.messages.key?(:bank_holder) %>
+<div class="error">
+<%= @bank_account.errors.messages[:bank_holder] %>
+</div>
+<% end %>
+</div>
 
-  <div class="field">
-    <%= form.label :bank_number %>
-    <%= form.number_field :bank_number ,class:"form-control" %>
-  </div>
+<div class="field">
+<%= form.label :口座番号 %>
+<%= form.number_field :bank_number ,class:"form-control" %>
+<% if @bank_account.errors.any? && @bank_account.errors.messages.key?(:bank_number) %>
+<div class="error">
+<%= @bank_account.errors.messages[:bank_number] %>
+</div>
+<% end %>
+</div>
 
 
-  <div class="actions">
-    <%= form.submit "口座を登録する",class:"btn btn-success btn-block" %>
-  </div>
+<div class="actions">
+<%= form.submit "口座を登録する",class:"btn btn-success btn-block" %>
+</div>
 <% end %>

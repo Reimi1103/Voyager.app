@@ -1,34 +1,54 @@
-<p id="notice"><%= notice %></p>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrxk4mWzR5KuFY6-X95rlEAnT1YhoJq5E&callback" async defer></script>
+<div class="container">
+    <div class="row">
+        <div class="card-columns">
+            <!------------------------------------ カード　------------------------------------>
+            <% @books.each do |book| %><!-- 繰り返し -->
+                <div class="card shadow" style="margin:20px 2px; font-size:0.9em;">
+                    <div class="card-header bg-white no-gutters" style="border:none; padding-left:5px;">
+                        <div class="row">
+                            <div class="col-6">
+                                <%= book.user.name %>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <% if book.bookCover? %>
+                    <a href="/book/<%= book.id %>">
+                        <div class="card-body no-gutters" style="padding:0;"><!-- 画像 -->
 
-<h1>Books</h1>
-
-
-    <% @books.each do |book| %>
-    <div class="panel panel-default"ß>
-    
-        <%= book.user_id %><br>
-        <%= book.title %><br>
-        <%= book.prologue %><br>
-        <%= image_tag book.bookCover.to_s , width:"300px"  %><br>
-        <%= book.progress %><br>
-        <%= book.schedule %><br>
-        <div id="favorite_<%= book.id %>">
-          <% if book.favorite_users.include?(current_user) %>
-            <%= link_to destroy_favorite_path(book_id: book.id),style: "font-size: 28px;color:#ffe400;",remote: true do %>
-              <i class="fas fa-star"></i>
+                                        <div class="listtrim">
+                                            <%= image_tag book.bookCover.url  unless book.bookCover.blank? %>
+                                        </div>
+                                    
+                    </a>
+                <% end %>
+                <div class="card-body no-gutters" style="z-index:15;">
+                <a style="padding:0px;" href="/book/<%= book.id %>">
+                <div style="padding:5px;">
+                    <%=  book.prologue.truncate(100) %><!-- 本文 -->
+                </div>
+                </a>
+                <div class="card-body no-gutters"style="padding-left:5px;">
+                    <% book.book_hash_tags.each do |tag| %><!-- ハッシュタグ -->
+                        <div style="padding-left:5px;">
+                            #<%= tag.tag %>
+                        </div>
+                    <% end %>
+                </div>
+                <div class="row">
+                <!-- いいね&コメントカウント -->
+                <div class="col-7 ">
+                    <% if logged_in? %>
+                    <i class="fas fa-heart"></i>100<i class="far fa-comment" style="padding-left:20px;">10</i>
+                    <% end %>
+                </div>
+                <!-- viewカウント　-->
+                <div class="col-5">
+                    <i class="fas fa-eye" style="padding-left:55px;"></i>100
+                </div>
             <% end %>
-          <% else%>
-            <%= link_to new_favorite_path(book_id: book.id),style: "font-size: 28px;color:#ffe400;",remote: true do %>
-              <i class="far fa-star"></i>
-            <% end %>
-          <% end %>
+        <!------------------------------------ カード　------------------------------------>
         </div>
-        <br>
-
-   
-      </div>
-    <% end %>
-
-
-<br>
-
+    </div>
+</div>

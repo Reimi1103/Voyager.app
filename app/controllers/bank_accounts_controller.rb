@@ -30,10 +30,12 @@ class BankAccountsController < ApplicationController
     @bank_account = BankAccount.new(bank_account_params)
     @bank_account.user_id=current_user.id
     respond_to do |format|
+  
       if @bank_account.save
-        format.html { redirect_to root_path, notice: 'Bank account was successfully created.' }
+        format.html { redirect_to @bank_account, notice: 'Bank account was successfully created.' }
         format.json { render :show, status: :created, location: @bank_account }
       else
+
         format.html { render :new }
         format.json { render json: @bank_account.errors, status: :unprocessable_entity }
       end
@@ -76,7 +78,9 @@ class BankAccountsController < ApplicationController
     end
 
     def correct_user
-      @user = User.find(params[:id])
+      @bank_account = BankAccount.find_by(user_id: @bank_account.user_id)
+      @user = User.find_by(id: @bank_account[:user_id])
       redirect_to(root_url) unless @user == current_user
+
     end
 end

@@ -88,7 +88,6 @@ describe PryStackExplorer do
       it 'does not infinite loop when pry is started in MyObject#==' do
         o = Object.new
         def o.==(other)
-          binding.pry
         end
 
         redirect_pry_io(InputTester.new(":hello", "exit-all"), out=StringIO.new) do

@@ -1,75 +1,156 @@
-<%= form_for post,url: book_posts_path do |form| %>
-  <% if post.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
-
-      <ul>
-      <% post.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+<div class="container">
+  <div class="col-8 mx-auto">
+    <%= form_for post,url: book_posts_path do |form| %>
+      <% if post.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+          <ul>
+          <% post.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :text %>
-    <%= form.text_area :text,class: "form-control" %>
-  </div>
-
-  <div class="field">
-    <%= form.label :image1 %>
-    <%= form.file_field :image1 %>
-  </div>
-
-  <div class="field">
-    <%= form.label :image2 %>
-    <%= form.file_field :image2 %>
-  </div>
-
-  <div class="field">
-    <%= form.label :image3 %>
-    <%= form.file_field :image3 %>
-  </div>
-
+      <div class="field">
+        <%= form.label :text %>
+        <%= form.text_area :text,class: "form-control" %>
+      </div>
+      <!---------- 画像　---------->
+      <div class="row mx-auto">
+        <div class="col4" style="width:30%">
+          <%= form.label "image1" %>
+          <div  id="img_field1" onClick="$('#file_image1').click()" class="text-center img_field"><!-- id "file"で、fileとdivを紐付けクリック時に連動 -->    
+            <% if @post.image1.url.present? %>
+              <%= image_tag(@post.image1.url,:width=>"100%") %><!-- 画像があるときは画像を表示する -->
+            <% else %>
+              <i class="fas fa-image mx-auto"></i><i class="fas fa-file-upload add"></i>
+            <% end %>
+          </div>
+          <%= form.file_field :image1, class: "image mx-auto", style: "display:none;", id: "file_image1"%><!-- id "file"をつけ、「display:none;」で隠す -->
+          <% if @post.errors.messages[:image1].present?  %>
+            <div class="error">
+              <% @post.errors.messages[:image1].each do |message| %>
+                <%= message %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="col4" style="width:30%">
+          <%= form.label "image2" %>
+          <div  id="img_field2" onClick="$('#file_image2').click()" class="text-center img_field"><!-- id "file"で、fileとdivを紐付けクリック時に連動 -->    
+            <% if @post.image2.url.present? %>
+              <%= image_tag(@post.image1.url,:width=>"100%") %><!-- 画像があるときは画像を表示する -->
+            <% else %>
+              <i class="fas fa-image mx-auto"></i><i class="fas fa-file-upload add"></i>
+            <% end %>
+          </div>
+          <%= form.file_field :image2, class: "image mx-auto", style: "display:none;", id: "file_image2"%><!-- id "file"をつけ、「display:none;」で隠す -->
+          <% if @post.errors.messages[:image2].present?  %>
+            <div class="error">
+              <% @post.errors.messages[:image2].each do |message| %>
+                <%= message %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="col4" style="width:30%">
+          <%= form.label "image3" %>
+          <div  id="img_field3" onClick="$('#file_image3').click()" class="text-center img_field"><!-- id "file"で、fileとdivを紐付けクリック時に連動 -->    
+            <% if @post.image1.url.present? %>
+              <%= image_tag(@post.image1.url,:width=>"100%") %><!-- 画像があるときは画像を表示する -->
+            <% else %>
+              <i class="fas fa-image mx-auto"></i><i class="fas fa-file-upload add"></i>
+            <% end %>
+          </div>
+          <%= form.file_field :image3, class: "image mx-auto", style: "display:none;", id: "file_image3"%><!-- id "file"をつけ、「display:none;」で隠す -->
+          <% if @post.errors.messages[:image3].present?  %>
+            <div class="error">
+              <% @post.errors.messages[:image3].each do |message| %>
+                <%= message %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div><!-- row -->
+      <!---------- 画像ここまで　---------->
   <%= hidden_field_tag "post[latitude]","",id: "map_latitude" %>
   <%= hidden_field_tag "post[longitude]","",id: "map_longitude" %>
-  <div id="map"></div>
-    <style type="text/css">
-      #map {
-        height:400px;
-      }
-    </style>
-    <script type="text/javascript">
-      var latitude = 35.679
-      var longitude = 139.732
 
-      $('#map_latitude').val(latitude);
-      $('#map_longitude').val(longitude);
-          L.Icon.Default.imagePath = "/assets";
-          var map = L.map('map').setView([latitude, longitude],17);
-          var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-          var osmAttrib = "Map data OpenstreetMap contributors";
-          L.tileLayer(osmUrl,{
-            attribution: osmAttrib,
-            maxZoom: 20,
-          }).addTo(map);
 
-          var marker = L.marker([latitude, longitude]).addTo(map);
-
-          map.on("click",function(e){
-            marker.setLatLng(e.latlng);
-            $('#map_latitude').val(e.latlng.lat);
-            $('#map_longitude').val(e.latlng.lng);
-          });
-
-    </script>
 
 <%= fields_for :postHashTag do |p| %>
       <%= p.label :hashtag %>
       <%= p.text_field :tag,class: "form-control" %>
-
+<% end %>
   <div class="actions">
     <%= form.submit "ポストの作成",class: "btn btn-success" %>
   </div>
 <% end %>
-<% end %>
+
+  
+<!-- google map -->
+<h2>gmap</h2>
+<input type="text" id="map_search_input" class="form-cotrol" style="border:1px solid gray;">
+<button id="map_search_button" class="btn btn-info">地図表示</button>
+
+
+<div id="map">
+</div>
+
+<style>
+#map{
+  height: 400px;
+}
+</style>
+
+<script>
+
+  let mapInstance; //この変数はmap.js.erbでも使うのでタイプミスに注意
+  
+  function initMap(){
+    mapInstance = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: -34.397, lng: 150.644},
+    zoom: 8
+    });
+  }
+  $("#map_search_button").click(function(){
+    var geocoder = new google.maps.Geocoder();
+    map_text = $("#map_search_input").val();  
+    var map = new google.maps.Map(document.getElementById("map"),{
+    center: {lat: -34.397, lng: 150.644},
+    zoom: 8
+    });
+    
+    geocoder.geocode( { 'address': map_text}, function(results, status) {
+          
+        // ジオコーディングが成功した場合
+        if (status == google.maps.GeocoderStatus.OK) {
+            
+          // 変換した緯度・経度情報を地図の中心に表示
+          map.setCenter(results[0].geometry.location);
+            
+          //☆表示している地図上の緯度経度
+          document.getElementById('map_latitude').value=results[0].geometry.location.lat();
+          document.getElementById('map_longitude').value=results[0].geometry.location.lng();
+            
+          // マーカー設定
+          marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+          });
+          console.log(status);
+        // ジオコーディングが成功しなかった場合
+        } else {
+          console.log('Geocode was not successful for the following reason: ' + status);
+        }
+        
+      });
+
+  });
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrxk4mWzR5KuFY6-X95rlEAnT1YhoJq5E&callback=initMap" async defer></script>
+
+</div>
+
+</div>
