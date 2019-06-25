@@ -19,16 +19,14 @@
   <!------------------------------ body ------------------------------>
   <body>
 
-      <button class="fixed_btn_search" data-toggle="modal" data-target="#search"><i class="fas fa-search-location fa-lg"></i></button>
-      <button class="fixed_btn_favorite" data-toggle="modal" data-target="#favorites"><i class="fas fa-bookmark"></i></button>
-      <button class="fixed_btn_post" data-toggle="modal" data-target="#fpost"><%= image_tag "pen_icon.png",style:"width:48px; margin-left:-6px; margin-bottom:3px;"%></button><!-- 浮いて固定されたボタンのテスト　-->
+
         <% if @nav_flag == "on" %>
           <%= render 'layouts/nav'%>
           <div class="container">
             <%= render 'layouts/header'%>
           </div>
         <% else %>
-          <div class="container" style="padding-top:75px;">
+          <div class="container" style="padding-top:48px;">
             <%= render 'layouts/header' %>
           </div>
         <% end %>
@@ -44,77 +42,3 @@
   </body>
 </html>
 
-
-<!----------------- search モーダル　------------>
-<div class="modal fade" id="search" tabindex="-1" role="dialog" aria-labelledby="search" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="border:none;">
-        <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-        <div class="modal-body">
-          <div class="row">         
-            <div class="search" style="padding-left:10px;">  
-            ポストの検索
-              <%= form_tag(post_search_path,:method => 'get',:class=>"form-inline my-2 my-lg-0") do %>
-                <i class="fas fa-search-location"></i>
-                <%= text_field_tag :search, '',class: "form-control",style:"padding:0px;padding-left:10px; font-size:0.9em;",placeholder: '#ハワイ' %>
-                <%= submit_tag '検索', :tag => nil %>
-              <% end %>
-            </div>
-            <div class="search" style="padding-left:10px;">  
-            ブックの検索
-              <%= form_tag(book_search_path,:method => 'get',:class=>"form-inline my-2 my-lg-0") do %>
-                <i class="fas fa-search-location"></i>
-                <%= text_field_tag :search, '',class: "form-control",style:"padding:0px;padding-left:10px; font-size:0.9em;",placeholder: '#ハワイ' %>
-                <%= submit_tag '検索', :tag => nil %>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!----------------- favorites モーダル　------------>
-<div class="modal fade" id="favorites" tabindex="-1" role="dialog" aria-labelledby="favorites" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="border:none;">
-        <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-        <div class="modal-body">
-          <div class="row">         
-            お気に入り表示
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!----------------- post モーダル　------------>
-<div class="modal fade" id="post" tabindex="-1" role="dialog" aria-labelledby="post" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="border:none;">
-        <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-        <div class="modal-body">
-          <div class="row">   
-          ポスト
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>

@@ -1,41 +1,54 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrxk4mWzR5KuFY6-X95rlEAnT1YhoJq5E&callback" async defer></script>
-
+<div class="container">
 <!------------------------------------ 表紙　------------------------------------>
 <div class="row flex-column align-items-center">
-  <div class="col-sm-12 col-md-9 no-gutters">
-    <div class="card bg-dark text-white" style="border:none;">
+  <div class="col-xs-12 col-md-9 no-gutters">
+    <div class="card bg-dark " style="border:none;">
       <div class="card-img" art="ブックカバー">
           <%= image_tag(@book.bookCover.url,:class=>"w-100") %><!-- ブックカバー　-->
-        <div class="card-img-overlay">
+        <div class="card-img-overlay" style="padding:5px;">
           <% if @user.image? %>
             <%= link_to user_path(@user) do %>
-              <%= image_tag(@user.image.url,width:'50') %><!-- アイコン　-->
+              <%= image_tag(@user.image.url,width:'50',:class => "list_icon") %><!-- アイコン　-->
             <% end %>
           <% end %>
-          <%= @user.name %><!-- 名前　-->
+          <%= @user.name %><!-- 名前　-->   
+          <div class="container">      
+          <div class="row" style="font-size:1.3em;">
+          <%= @book.title %><!-- タイトル　-->  
+          </div>
+          <div class="row" style="font-size:0.8em;"">
           <% if @book.schedule? %>
-            <p>旅のスケジュール</p>
-            <%= @book.schedule %><br><!-- スケジュール　-->
+            <%= @book.schedule %><!-- スケジュール　-->
           <% end %>
           <% if @book.progress==false%><!-- 進行状況　-->
-            <span class="badge badge-danger">更新中</span>
+            <div class="badge badge-pill badge-info">更新中</div>
           <% end %>
+          </div>
+          </div>
         </div><!-- card-img-overlay -->
       </div><!-- card-img -->
     </div><!-- card -->
     <div style="margin:10px; font-size:0.8em;">
-      <%= simple_format @book.prologue %><!-- プロローグ　-->
-      <% @book.book_hash_tags.each do |tag| %>
-        <span class="btn btn-default"><%= tag.tag %></span><!-- ハッシュタグ　-->
-      <% end %>
-      <% if @book.user==current_user %>
-        <%= link_to '編集', edit_book_path(@book) , { :class => "btn btn-primary rounded-pill"} %> <!-- ブック編集ボタン　-->
-        <%= link_to "ポストの作成",new_book_post_path(@book),class: "btn btn-info" %><!-- ポスト投稿ボタン　-->
-      <% end %>
-    </div>
+      <%= simple_format(@book.prologue,{},wrapper_tag: "div") %><!-- プロローグ　-->
+      <div style="padding:0.5em 0;">
+        <% @book.book_hash_tags.each do |tag| %>
+          <span style="font-size:1em; color:blue;"><%= tag.tag %></span><!-- ハッシュタグ　-->
+        <% end %>
+      </div>
+      <div class="container">
+        <div class="row justify-content-end">
+        <% if @book.user==current_user %>
+          <div class="col-3" style="padding-right:3px;"><%= link_to '編集', edit_book_path(@book) , { :class => "btn-sm btn-info rounded-pill float-right"} %></div> <!-- ブック編集ボタン　-->
+          <div class="col-4 no-gutters"><%= link_to "ポストの作成",new_book_post_path(@book),class: "btn-sm btn-info rounded-pill float-right" %></div><!-- ポスト投稿ボタン　-->
+        <% end %>
+        </div>
+      </div>
+
     <hr>
   </div><!-- col -->
 </div><!-- row -->
+</div>
 
 <!------------------------------------ ポスト　------------------------------------>
 <%# if Date.today == post.created_at %><%#end%>

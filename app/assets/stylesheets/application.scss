@@ -71,9 +71,8 @@ text-decoration:none;
 
 .badge {
     position: relative;
-    bottom: 0.2em;
     display: inline-block;
-    padding: 0.25em 0.4em;
+    padding: 0.43em 0.4em;
     font-size: 75%;
     font-weight: 700;
     line-height: 1;
@@ -266,6 +265,7 @@ text-decoration:none;
         transition: 0.3s ease-out;
     }
 
+
 /*  --------------- 画像スライダー ---------------　*/
 
 .hoge_slide{
@@ -276,3 +276,6 @@ text-decoration:none;
 .slick-slide{
     margin :0px 5px;
 }
+
+/*  --------------- セレクトボックス ---------------　*/
+

@@ -164,3 +164,12 @@ $('.text_overflow .more').click(function() {
   return false;
 });
 });
+
+
+$(function(){
+
+  $('#js-count').keyup(function(){
+    var count = $(this).val().length;
+    $('.show-count').text(count);
+  });
+});

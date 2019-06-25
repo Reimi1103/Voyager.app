@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="col-8 mx-auto">
+  <div class="col-xs-12 col-lg-8 mx-auto">
     <%= form_for post,url: book_posts_path do |form| %>
       <% if post.errors.any? %>
         <div id="error_explanation">
@@ -16,8 +16,7 @@
         <%= form.text_area :text,class: "form-control" %>
       </div>
       <!---------- 画像　---------->
-      <div class="row mx-auto">
-        <div class="col4" style="width:30%">
+        <div class="col-xs-12 col-lg-4">
           <%= form.label "image1" %>
           <div  id="img_field1" onClick="$('#file_image1').click()" class="text-center img_field"><!-- id "file"で、fileとdivを紐付けクリック時に連動 -->    
             <% if @post.image1.url.present? %>
@@ -35,7 +34,7 @@
             </div>
           <% end %>
         </div>
-        <div class="col4" style="width:30%">
+        <div class="col-xs-12 col-lg-4 ">
           <%= form.label "image2" %>
           <div  id="img_field2" onClick="$('#file_image2').click()" class="text-center img_field"><!-- id "file"で、fileとdivを紐付けクリック時に連動 -->    
             <% if @post.image2.url.present? %>
@@ -53,7 +52,7 @@
             </div>
           <% end %>
         </div>
-        <div class="col4" style="width:30%">
+        <div class="col-xs-12 col-lg-4">
           <%= form.label "image3" %>
           <div  id="img_field3" onClick="$('#file_image3').click()" class="text-center img_field"><!-- id "file"で、fileとdivを紐付けクリック時に連動 -->    
             <% if @post.image1.url.present? %>

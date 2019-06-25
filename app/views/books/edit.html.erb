@@ -9,8 +9,7 @@
             <div class="error">入力エラーがあります。</div>
           <% end %>
           <!-- 表紙 -->
-          <div class="text-left" style="padding-top:10px;">
-            <div class="field">
+          <div class="text-left">
               <span class="badge badge-pill badge-primary required" style="margin-bottom:0.2em;">必須</span><%= form.label "表紙の画像" %>
               <div id="img_field" onClick="$('#file').click()" ><!-- id "file"で、fileとdivを紐付けクリック時に連動 -->      
                 <% if @book.bookCover.url.present? %>
@@ -20,7 +19,7 @@
                 <% end %>
               </div>
               <%= form.file_field :bookCover, class: "image", style: "display:none;", id: "file"%><!-- id "file"をつけ、「display:none;」で隠す -->
-            </div>
+            
             <% if @book.errors.messages[:bookCover].present?  %>
               <div class="error">
                 <% @book.errors.messages[:bookCover].each do |message| %>
